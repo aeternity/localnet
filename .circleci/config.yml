@@ -24,13 +24,13 @@ commands:
         default: 3013
     steps:
       - run:
-          name: Test external & internal API
+          name: Health check APIs
           command: |
             EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
             INTERNAL_ADDRESS=localhost:<< parameters.port >> \
             ./test/healthcheck.sh
       - run:
-          name: Test external & legacy internal API
+          name: Health check APIs (legacy routing)
           command: |
             EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
             INTERNAL_ADDRESS=localhost:<< parameters.port >>/internal \
