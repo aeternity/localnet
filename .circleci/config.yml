@@ -26,14 +26,16 @@ commands:
       - run:
           name: Health check APIs
           command: |
-            EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
-            INTERNAL_ADDRESS=localhost:<< parameters.port >> \
+            EXTERNAL_ADDR=localhost:<< parameters.port >> \
+            INTERNAL_ADDR=localhost:<< parameters.port >> \
+            WEBSOCKET_ADDR=localhost:<< parameters.port >> \
             ./test/healthcheck.sh
       - run:
           name: Health check APIs (legacy routing)
           command: |
-            EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
-            INTERNAL_ADDRESS=localhost:<< parameters.port >>/internal \
+            EXTERNAL_ADDR=localhost:<< parameters.port >> \
+            INTERNAL_ADDR=localhost:<< parameters.port >>/internal \
+            WEBSOCKET_ADDR=localhost:<< parameters.port >> \
             ./test/healthcheck.sh
 
   integration_tests:
