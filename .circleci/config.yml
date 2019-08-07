@@ -13,9 +13,12 @@ commands:
           command:
             docker-compose up
           background: true
+      - run:
+          name: Give some time to boot the TCP listeners
+          command: sleep 30
 
   health_check_node:
-    description: "Health Check a Node"
+    description: Health Check a Node
     parameters:
       port:
         type: integer
@@ -35,11 +38,8 @@ commands:
             ./test/healthcheck.sh
 
   integration_tests:
-    description: "Integration Tests"
+    description: Integration Tests
     steps:
-      # - run:
-      #     name: "Give some time to boot the TCP listeners"
-      #     command: sleep 30
       - health_check_node:
           port: 3001
       - health_check_node:
