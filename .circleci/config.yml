@@ -1,17 +1,16 @@
 version: 2.1
-executors:
-  test_container:
-    docker:
-      - image: circleci/buildpack-deps:bionic
-
 commands:
   run_test_nodes:
     description: Run docker-compose nodes
     steps:
       - run:
+          name: Prepare ubuntu user (1000:1000) to run docker commands
+          command: |
+            sudo usermod -aG docker ubuntu
+      - run:
           name: Run docker-compose in background
           command:
-            docker-compose up
+            sudo -u ubuntu -E -H docker-compose up
           background: true
       - run:
           name: Give some time to boot the TCP listeners
@@ -49,10 +48,9 @@ commands:
 
 jobs:
   integration_tests:
-    executor: test_container
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run_test_nodes
       - integration_tests
 
