@@ -2,14 +2,21 @@
 peers:
     - aenode://pp_28uQUgsPcsy7TQwnRxhF8GMKU4ykFLKsgf4TwDwPMNaSCXwWV8@node2:3015
     - aenode://pp_Dxq41rJN33j26MLqryvh7AnhuZywefWKEPBiiYu2Da2vDWLBq@node3:3015
+
 http:
     external:
         port: 3013
     internal:
+        port: 3113
         listen_address: 0.0.0.0
         debug_endpoints: true
     cors:
         allow_domains: [""]
+
+websocket:
+    channel:
+        port: 3014
+        listen_address: 0.0.0.0
 
 keys:
     peer_password: "top secret"
