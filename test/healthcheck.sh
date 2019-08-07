@@ -7,7 +7,7 @@ INTERNAL_ADDRESS=${INTERNAL_ADDRESS:-localhost:3113}
 MIN_PEERS=${MIN_PEERS:-2}
 
 # External API
-curl -sSf -o /dev/null --retry 10 --retry-connrefused http://${EXTERNAL_ADDRESS}/v2/status || exit 1
+curl -sSf -o /dev/null --retry 10 http://${EXTERNAL_ADDRESS}/v2/status || exit 1
 
 # Internal API
 PEERS_COUNT=$(curl -s -S ${INTERNAL_ADDRESS}/v2/debug/peers | grep -o aenode | wc -l)
