@@ -1,0 +1,63 @@
+version: 2.1
+executors:
+  test_container:
+    docker:
+      - image: circleci/buildpack-deps:bionic
+
+commands:
+  run_test_nodes:
+    description: Run docker-compose nodes
+    steps:
+      - run:
+          name: Run docker-compose in background
+          command:
+            docker-compose up
+          background: true
+
+  health_check_node:
+    description: "Health Check a Node"
+    parameters:
+      port:
+        type: integer
+        default: 3013
+    steps:
+      - run:
+          name: Test external & internal API
+          command: |
+            EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
+            INTERNAL_ADDRESS=localhost:<< parameters.port >> \
+            ./test/healthcheck.sh
+      - run:
+          name: Test external & legacy internal API
+          command: |
+            EXTERNAL_ADDRESS=localhost:<< parameters.port >> \
+            INTERNAL_ADDRESS=localhost:<< parameters.port >>/internal \
+            ./test/healthcheck.sh
+
+  integration_tests:
+    description: "Integration Tests"
+    steps:
+      # - run:
+      #     name: "Give some time to boot the TCP listeners"
+      #     command: sleep 30
+      - health_check_node:
+          port: 3001
+      - health_check_node:
+          port: 3002
+      - health_check_node:
+          port: 3003
+
+jobs:
+  integration_tests:
+    executor: test_container
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run_test_nodes
+      - integration_tests
+
+workflows:
+  test:
+    jobs:
+      - integration_tests:
+          requires: []
