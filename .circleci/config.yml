@@ -4,13 +4,8 @@ commands:
     description: Run docker-compose nodes
     steps:
       - run:
-          name: Prepare ubuntu user (1000:1000) to run docker commands
-          command: |
-            sudo usermod -aG docker ubuntu
-      - run:
-          name: Run docker-compose in background
-          command:
-            sudo -u ubuntu -E -H docker-compose up
+          name: Run nodes in background
+          command: docker-compose up
           background: true
       - run:
           name: Give it some time to boot the nodes
