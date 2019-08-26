@@ -7,7 +7,7 @@ services:
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
-      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
       - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node1:/home/aeternity/node/keys
@@ -19,7 +19,7 @@ services:
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
-      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
       - ${PWD}/node/config/node2_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node2:/home/aeternity/node/keys
@@ -31,7 +31,7 @@ services:
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
-      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
       - ${PWD}/node/config/node3_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node3:/home/aeternity/node/keys
