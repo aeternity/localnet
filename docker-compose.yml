@@ -1,0 +1,22 @@
+# docker run:
+#   docker run -p 3013:3013 -p 3015:3015 aeternity/aeternity bin/aeternity console -noinput -network_id ae_devnet
+#   ENTRYPOINT ["/docker-entrypoint.sh"]
+
+version: '3'
+services:
+  node:
+    container_name: aeternity_singlenode
+    image: aeternity/aeternity:${IMAGE_TAG:-latest}
+    hostname: ae_singlenode
+    environment:
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+    command: >
+      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+    volumes:
+      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/keys/node1:/home/aeternity/node/keys
+      - ae_singlenode_db:/home/aeternity/node/data/mnesia
+    expose: ["3013", "3014"]
+
+volumes:
+  ae_singlenode_db:
