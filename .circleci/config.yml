@@ -2,12 +2,12 @@ version: 2.1
 commands:
   run_test_nodes:
     description: Run docker-compose nodes
+    parameters:
+      config:
+        type: string
+        default: docker-compose.yml
     steps:
       - run:
-          parameters:
-            config:
-              type: string
-              default: docker-compose.yml
           name: Run nodes in background
           command: docker-compose -f << parameters.config >> up
           background: true
@@ -62,11 +62,15 @@ jobs:
     steps:
       - checkout
       - run_test_nodes:
-          config: docker-compose-singlenode.yml
-      - health_check_node
+          config: singlenode.yml
+      - run:
+          name: singlenode healthcheck API
+          command: MIN_PEERS=0 ./test/healthcheck.sh
 
 workflows:
   test:
     jobs:
       - integration_tests:
+          requires: []
+      - integration_singlenode_tests:
           requires: []

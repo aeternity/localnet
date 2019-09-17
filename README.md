@@ -1,8 +1,13 @@
 # Aeternity Localnet
 
-Docker-compose based configuration to easily run locally deployed dev/test network
+Docker-compose based configuration to easily run locally deployed dev/test network.
 
-It runs three nodes using the `mean15-generic` miner (fastest generic miner) and a proxy server to allow CORS and URL routing.
+This repository provide two setups described below:
+
+* 3 Node configuration (default).
+* Single node configuration -- good if you only want to write and test your smart contracts.
+
+The nodes use the `mean15-generic` miner (fastest generic miner).
 As the beneficiary key-pair is publicly available, this setup should *not* be connected to public networks.
 
 All local network nodes are configured with the same beneficiary account (for more details on beneficiary see [configuration documentation](https://github.com/aeternity/aeternity/blob/master/docs/configuration.md#beneficiary-account)):
@@ -13,6 +18,10 @@ All local network nodes are configured with the same beneficiary account (for mo
 All APIs (external, internal and state channels websocket) are exposed to the docker host, the URL pattern is as follows:
 - external/internal API - http://$DOCKER_HOST_ADDRESS:$NODE_PORT/
 - channels API - ws://$DOCKER_HOST_ADDRESS:$NODE_PORT/channel
+
+### 3 Node configuration (default)
+
+The multinode configuration (default) uses a proxy server to allow CORS and URL routing.
 
 Node ports:
 - `node1` - port 3001
@@ -44,6 +53,15 @@ docker-compose down -v
 ```
 
 More details can be found in [`docker-compose` documentation](https://docs.docker.com/compose/reference/).
+
+### Single Node Configuraiton
+
+To use a Single Node Configuration just append `-f singlenode.yml` to the docker-compose command. Example:
+
+```bash
+docker-compose -f singlenode.yml up
+```
+
 
 ### Image Version
 
