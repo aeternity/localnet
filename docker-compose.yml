@@ -50,6 +50,6 @@ services:
       - ${PWD}/nginx/ws.conf:/etc/nginx/ws.conf
 
 volumes:
-  node1_db:
-  node2_db:
-  node3_db:
+  ae_node1_db:
+  ae_node2_db:
+  ae_node3_db:
