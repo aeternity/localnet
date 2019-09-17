@@ -10,8 +10,6 @@ http:
         port: 3113
         listen_address: 0.0.0.0
         debug_endpoints: true
-    cors:
-        allow_domains: [""]
 
 websocket:
     channel:

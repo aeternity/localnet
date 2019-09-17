@@ -1,6 +1,5 @@
 # docker run:
-#   docker run -p 3013:3013 -p 3015:3015 aeternity/aeternity bin/aeternity console -noinput -network_id ae_devnet
-#   ENTRYPOINT ["/docker-entrypoint.sh"]
+#   docker run -p 3013:3013 -p 3015:3015 aeternity/aeternity bin/aeternity foreground -network_id ae_devnet
 
 version: '3'
 services:
@@ -11,7 +10,7 @@ services:
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
-      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
       - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node1:/home/aeternity/node/keys
