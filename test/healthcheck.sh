@@ -7,19 +7,19 @@ INTERNAL_ADDR=${INTERNAL_ADDR:-localhost:3113}
 WEBSOCKET_ADDR=${WEBSOCKET_ADDR:-localhost:3014}
 MIN_PEERS=${MIN_PEERS:-2}
 
-# External API
-curl -sSf -o /dev/null --retry 6 http://${EXTERNAL_ADDR}/v2/status || exit 1
+echo "Testing external API: ${EXTERNAL_ADDR}"
+curl -sSf -o /dev/null --retry 6 http://${EXTERNAL_ADDR}/v2/status || exit 2
 
-# Internal API
+echo "Testing internal API: ${INTERNAL_ADDR}"
 PEERS_COUNT=$(curl -sS ${INTERNAL_ADDR}/v2/debug/peers | grep -o aenode | wc -l)
 
-# Explicit exit because otherwise test would exit with status 127
-test $PEERS_COUNT -ge $MIN_PEERS || exit 1
+echo "Testing internal API: $PEERS_COUNT peers"
+test $PEERS_COUNT -ge $MIN_PEERS || exit 3
 
-# State Channels WebSocket API
+echo "Testing WebSockets API: ${WEBSOCKET_ADDR}"
 WS_STATUS=$(curl -sS -o /dev/null --retry 6 \
     -w "%{http_code}" \
     http://${WEBSOCKET_ADDR}/channel)
 # The proxy handles connection upgrade, and we send bad request anyway.
 # It shouldn't be 404 so we're good.
-[ $WS_STATUS -eq 400 ]
+test $WS_STATUS -ne 404
