@@ -10,7 +10,7 @@ services:
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
-      -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
       - ${PWD}/node/config/singlenode_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node1:/home/aeternity/node/keys

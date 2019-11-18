@@ -1,6 +1,7 @@
 # Aeternity Localnet
 
 Docker-compose based configuration to easily run locally deployed dev/test network.
+Latest config files support node v5.*. For older node versions use the 1.* tags of this repository.
 
 This repository provide two setups described below:
 
