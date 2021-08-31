@@ -46,7 +46,7 @@ commands:
   integration_tests:
     description: Integration Tests
     steps:
-      - health_check_node:
+      - health_check_node
       - health_check_node:
           external_port: 3013
           internal_port: 3113
