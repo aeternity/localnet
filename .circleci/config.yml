@@ -5,11 +5,11 @@ commands:
     parameters:
       config:
         type: string
-        default: docker-compose.yml
+        default: -f docker-compose.yml
     steps:
       - run:
           name: Run nodes in background
-          command: docker-compose -f << parameters.config >> up
+          command: docker-compose << parameters.config >> up
           background: true
       - run:
           name: Give it some time to boot the nodes
@@ -18,34 +18,59 @@ commands:
   health_check_node:
     description: Health Check a Node
     parameters:
-      port:
+      external_port:
         type: integer
-        default: 3013
+        default: 8080
+      internal_port:
+        type: integer
+        default: 8080
+      websocket_port:
+        type: integer
+        default: 8080
+      min_peers:
+        type: integer
+        default: 0
+      path_prefix:
+        type: string
+        default: ""
     steps:
       - run:
           name: Health check APIs
           command: |
-            EXTERNAL_ADDR=localhost:<< parameters.port >> \
-            INTERNAL_ADDR=localhost:<< parameters.port >> \
-            WEBSOCKET_ADDR=localhost:<< parameters.port >> \
-            ./test/healthcheck.sh
-      - run:
-          name: Health check APIs (legacy routing)
-          command: |
-            EXTERNAL_ADDR=localhost:<< parameters.port >> \
-            INTERNAL_ADDR=localhost:<< parameters.port >>/internal \
-            WEBSOCKET_ADDR=localhost:<< parameters.port >> \
+            MIN_PEERS=<< parameters.min_peers >> \
+            EXTERNAL_ADDR=localhost:<< parameters.external_port >><< parameters.path_prefix >> \
+            INTERNAL_ADDR=localhost:<< parameters.internal_port >><< parameters.path_prefix >> \
+            WEBSOCKET_ADDR=localhost:<< parameters.websocket_port >><< parameters.path_prefix >> \
             ./test/healthcheck.sh
 
   integration_tests:
     description: Integration Tests
     steps:
       - health_check_node:
-          port: 3001
       - health_check_node:
-          port: 3002
+          external_port: 3013
+          internal_port: 3113
+          websocket_port: 3014
+
+  integration_tests_multi:
+    description: Integration Tests - Multiple nodes
+    steps:
       - health_check_node:
-          port: 3003
+          min_peers: 2
+      - health_check_node:
+          min_peers: 2
+          external_port: 3013
+          internal_port: 3113
+          websocket_port: 3014
+      - health_check_node:
+          min_peers: 2
+          path_prefix: /node1
+      - health_check_node:
+          min_peers: 2
+          path_prefix: /node2
+      - health_check_node:
+          min_peers: 2
+          path_prefix: /node3
 
 jobs:
   integration_tests:
@@ -56,21 +81,19 @@ jobs:
       - run_test_nodes
       - integration_tests
 
-  integration_singlenode_tests:
+  integration_tests_multi:
     machine:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
       - run_test_nodes:
-          config: singlenode.yml
-      - run:
-          name: singlenode healthcheck API
-          command: MIN_PEERS=0 ./test/healthcheck.sh
+          config: -f docker-compose.yml -f docker-compose.multi.yml
+      - integration_tests_multi
 
 workflows:
   test:
     jobs:
       - integration_tests:
           requires: []
-      - integration_singlenode_tests:
+      - integration_tests_multi:
           requires: []

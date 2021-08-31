@@ -1,7 +1,5 @@
 ---
-peers:
-    - aenode://pp_28uQUgsPcsy7TQwnRxhF8GMKU4ykFLKsgf4TwDwPMNaSCXwWV8@node2:3015
-    - aenode://pp_Dxq41rJN33j26MLqryvh7AnhuZywefWKEPBiiYu2Da2vDWLBq@node3:3015
+peers: []
 
 http:
     external:
@@ -24,6 +22,9 @@ keys:
 
 chain:
     persist: true
+
+# logging:
+#     level: debug
 
 mining:
     beneficiary: "ak_twR4h7dEcUtc2iSEDv8kB7UFJJDGiEDQCXr85C3fYF8FdVdyo"
