@@ -105,3 +105,15 @@ The variable is in milliseconds, so to set 1 block per 10 seconds use:
 ```bash
 AETERNITY_MINE_RATE=10000 docker-compose up
 ```
+
+### Accounts
+
+This configuration includes 3 genesis pre-funded accounts:
+
+| Ammount                           | Public Address    |
+| -----------                       | -----------       |
+| 1000000000000000000000            | ak_AnYx7qbt5PZeNfa8kvAxA9WS3mGpSGAsshGbG6bkDLVtCxmMT       |
+| 2000000000000000000000            | ak_22vGvAfLipm8vK6ExtDxGEfbDXSeSEt9Ur87xyL2F11gb8ZRKg      |
+| 2000000000000000000000            | ak_XwTENL7b2UNqrbqqput7GrPPBxbXXWx7kiwxCz2C4oMAp1H8u       |
+
+Wallets for the accounts can be found in the [aepp template repository](https://github.com/aeternity/aepp-template#wallets).

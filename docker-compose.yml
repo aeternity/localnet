@@ -10,6 +10,7 @@ services:
     volumes:
       - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node1:/home/aeternity/node/keys
+      - ${PWD}/node/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
       - ae_node1_db:/home/aeternity/node/data/mnesia
     ports:
      - "3013:3013"
