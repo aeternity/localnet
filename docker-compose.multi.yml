@@ -1,0 +1,32 @@
+# Small local network of three nodes using the fastest mean15
+version: '3'
+services:
+  node2:
+    image: aeternity/aeternity:${IMAGE_TAG-latest}
+    hostname: node2
+    environment:
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+    command: >
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+    volumes:
+      - ${PWD}/node/config/node2_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/keys/node2:/home/aeternity/node/keys
+      - ${PWD}/node/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
+      - ae_node2_db:/home/aeternity/node/data/mnesia
+
+  node3:
+    image: aeternity/aeternity:${IMAGE_TAG-latest}
+    hostname: node3
+    environment:
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+    command: >
+      bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
+    volumes:
+      - ${PWD}/node/config/node3_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/keys/node3:/home/aeternity/node/keys
+      - ${PWD}/node/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
+      - ae_node3_db:/home/aeternity/node/data/mnesia
+
+volumes:
+  ae_node2_db:
+  ae_node3_db:

@@ -5,8 +5,8 @@ Latest config files support node `v5.*` For older node versions use the `v1.*` t
 
 This repository provide two setups described below:
 
-* 3 Node configuration (default).
-* Single node configuration -- good if you only want to write and test your smart contracts.
+* Single node configuration (default) -- good for smart contracts testing and node API features
+* 3 Node configuration (default) - good to test p2p, consensus etc. features
 
 The nodes use the `mean15-generic` miner (fastest generic miner).
 As the beneficiary key-pair is publicly available, this setup should *not* be connected to public networks.
@@ -16,29 +16,39 @@ All local network nodes are configured with the same beneficiary account (for mo
 - private key secret: `secret`
 - key-pair binaries can be found in `/node/keys/beneficiary` directory of this repository
 
+### Addresses
+
+The configuration uses a proxy server to allow CORS and URL routing.
+
 All APIs (external, internal and state channels websocket) are exposed to the docker host, the URL pattern is as follows:
-- external/internal API - http://$DOCKER_HOST_ADDRESS:$NODE_PORT/
-- channels API - ws://$DOCKER_HOST_ADDRESS:$NODE_PORT/channel
 
-### 3 Node configuration (default)
+- external/internal API - http://$DOCKER_HOST_ADDRESS:8080/nodeX
+- channels API - ws://$DOCKER_HOST_ADDRESS:8080/nodeX/channel
 
-The multinode configuration (default) uses a proxy server to allow CORS and URL routing.
+For example if one wants to use `node1` API on local docker host the address is: http://localhost:8080/node1/v2/status
 
-Node ports:
-- `node1` - port 3001
-- `node2` - port 3002
-- `node3` - port 3003
+Also the node1 is always available without URL path suffix, for example:
 
-For example to access `node2` peer public key, assuming docker host address is `localhost`:
+http://localhost:8080/v2/status
 
-```bash
-curl http://localhost:3002/v2/peers/pubkey
-```
+Also node1 have the standard port bindings as well:
 
-To start the network:
+- port 3013 - External API
+- port 3113 - Internal API
+- port 3014 - State Channels API
+
+### Single Node Configuraiton (default)
+
+To use a Single Node Configuration start the containers with the docker-compose command. Example:
 
 ```bash
 docker-compose up -d
+```
+
+Check if the node is running:
+
+```bash
+curl http://localhost:8080/v2/status
 ```
 
 To destroy the network:
@@ -55,14 +65,24 @@ docker-compose down -v
 
 More details can be found in [`docker-compose` documentation](https://docs.docker.com/compose/reference/).
 
-### Single Node Configuraiton
+### 3 Node configuration
 
-To use a Single Node Configuration just append `-f singlenode.yml` to the docker-compose command. Example:
+To start the 3 node configuration use the additional docker-compose config:
 
 ```bash
-docker-compose -f singlenode.yml up
+docker-compose -f docker-compose.yml -f docker-compose.multi.yml up -d
 ```
 
+Node names:
+- `node1`
+- `node2`
+- `node3`
+
+For example to access `node2` API (status), assuming docker host address is `localhost`:
+
+```bash
+curl http://localhost:8080/node2/v2/status
+```
 
 ### Image Version
 
@@ -74,7 +94,7 @@ To change what node version is used set `IMAGE_TAG` environment variable, e.g.:
 IMAGE_TAG=v4.0.0 docker-compose up -d
 ```
 
-This configuration is known to work with node versions >= 2.0.0
+This configuration is known to work with node versions >= 5.0.0
 
 ### Mining Rate
 
@@ -85,3 +105,15 @@ The variable is in milliseconds, so to set 1 block per 10 seconds use:
 ```bash
 AETERNITY_MINE_RATE=10000 docker-compose up
 ```
+
+### Accounts
+
+This configuration includes 3 genesis pre-funded accounts:
+
+| Ammount                           | Public Address    |
+| -----------                       | -----------       |
+| 1000000000000000000000            | ak_AnYx7qbt5PZeNfa8kvAxA9WS3mGpSGAsshGbG6bkDLVtCxmMT       |
+| 2000000000000000000000            | ak_22vGvAfLipm8vK6ExtDxGEfbDXSeSEt9Ur87xyL2F11gb8ZRKg      |
+| 2000000000000000000000            | ak_XwTENL7b2UNqrbqqput7GrPPBxbXXWx7kiwxCz2C4oMAp1H8u       |
+
+Wallets for the accounts can be found in the [aepp template repository](https://github.com/aeternity/aepp-template#wallets).
