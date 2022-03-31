@@ -1,14 +1,16 @@
 # Aeternity Localnet
 
 Docker-compose based configuration to easily run locally deployed dev/test network.
-Latest config files support node `v5.*` For older node versions use the `v1.*` tags of this repository.
+Latest config files support node `v6.*` For older node versions use the `v1.*` tags of this repository.
 
 This repository provide two setups described below:
 
-* Single node configuration (default) -- good for smart contracts testing and node API features
-* 3 Node configuration (default) - good to test p2p, consensus etc. features
+* Single node configuration in devmode (default) -- good for smart contracts testing and node API features
+* 3 Node configuration - good to test p2p, consensus etc. features
 
-The nodes use the `mean15-generic` miner (fastest generic miner).
+Single node configuration uses the [devmode plugin](https://github.com/aeternity/aeplugin_dev_mode) in default configuration.
+
+The 3 node configuration uses the `mean15-generic` miner (fastest generic miner).
 As the beneficiary key-pair is publicly available, this setup should *not* be connected to public networks.
 
 All local network nodes are configured with the same beneficiary account (for more details on beneficiary see [configuration documentation](https://github.com/aeternity/aeternity/blob/master/docs/configuration.md#beneficiary-account)):
@@ -36,6 +38,7 @@ Also node1 have the standard port bindings as well:
 - port 3013 - External API
 - port 3113 - Internal API
 - port 3014 - State Channels API
+- port 3313 - Dev Mode plugin
 
 ### Single Node Configuraiton (default)
 
@@ -70,7 +73,7 @@ More details can be found in [`docker-compose` documentation](https://docs.docke
 To start the 3 node configuration use the additional docker-compose config:
 
 ```bash
-docker-compose -f docker-compose.yml -f docker-compose.multi.yml up -d
+docker-compose -f docker-compose.multi.yml up -d
 ```
 
 Node names:
@@ -86,7 +89,7 @@ curl http://localhost:8080/node2/v2/status
 
 ### Image Version
 
-Docker compose uses the `aeternity/aeternity:latest` image by default, it will be pulled from [docker hub](https://hub.docker.com/r/aeternity/aeternity/) if it's not found locally.
+3 node configuration uses the `aeternity/aeternity:latest` image by default, it will be pulled from [docker hub](https://hub.docker.com/r/aeternity/aeternity/) if it's not found locally.
 
 To change what node version is used set `IMAGE_TAG` environment variable, e.g.:
 
@@ -96,14 +99,18 @@ IMAGE_TAG=v4.0.0 docker-compose up -d
 
 This configuration is known to work with node versions >= 5.0.0
 
+The devmode (single node) configuration uses the `aeternity/aeternity:latest-bundle` by default which included the [devmode plugin](https://github.com/aeternity/aeplugin_dev_mode)
+
+The image can be changed (i.e. to specific version) by setting `IMAGE_TAG` environment variable.
+
 ### Mining Rate
 
-By default the localnet has set default mine rate of 1 block per 15 seconds.
+By default the 3 nodes localnet has set default mine rate of 1 block per 15 seconds.
 It can be changed by setting `AETERNITY_MINE_RATE` environment variable.
 The variable is in milliseconds, so to set 1 block per 10 seconds use:
 
 ```bash
-AETERNITY_MINE_RATE=10000 docker-compose up
+AETERNITY_MINE_RATE=10000 docker-compose -f docker-compose.multi.yml up
 ```
 
 ### Accounts

@@ -1,21 +1,22 @@
 version: '3'
 services:
   node1:
-    image: aeternity/aeternity:${IMAGE_TAG:-latest}
+    image: aeternity/aeternity:${IMAGE_TAG:-latest-bundle}
     hostname: node1
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
     command: >
       bin/aeternity console -noinput -aecore expected_mine_rate ${AETERNITY_MINE_RATE:-15000}
     volumes:
-      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/config/node1_devmode.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/keys/node1:/home/aeternity/node/keys
       - ${PWD}/node/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
-      - ae_node1_db:/home/aeternity/node/data/mnesia
+      - ae_node1_devmode_db:/home/aeternity/node/data/mnesia
     ports:
      - "3013:3013"
      - "3113:3113"
      - "3014:3014"
+     - "3313:3313"
 
   nginx:
     image: nginx:1.13.8
@@ -30,4 +31,4 @@ services:
       - ${PWD}/nginx/ws.conf:/etc/nginx/ws.conf
 
 volumes:
-  ae_node1_db:
+  ae_node1_devmode_db:
