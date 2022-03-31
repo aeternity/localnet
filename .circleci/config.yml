@@ -87,7 +87,7 @@ jobs:
     steps:
       - checkout
       - run_test_nodes:
-          config: -f docker-compose.yml -f docker-compose.multi.yml
+          config: -f docker-compose.multi.yml
       - integration_tests_multi
 
 workflows:
