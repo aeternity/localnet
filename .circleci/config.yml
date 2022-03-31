@@ -75,7 +75,7 @@ commands:
 jobs:
   integration_tests:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202201-02
     steps:
       - checkout
       - run_test_nodes
@@ -83,7 +83,7 @@ jobs:
 
   integration_tests_multi:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202201-02
     steps:
       - checkout
       - run_test_nodes:
