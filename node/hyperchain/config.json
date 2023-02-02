@@ -1,6 +1,6 @@
 {
   "fork_management": {
-    "network_id": "ae_devnet"
+    "network_id": "hc_devnet"
   },
   "chain": {
     "consensus": {

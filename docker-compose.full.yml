@@ -84,7 +84,7 @@ services:
     ports:
       - "8040:3080"
 
-  base-backend:
+  base_backend:
     image: aeternity/aepp-base-backend
     environment:
       VAPID_SUBJECT: 'mailto: <info@aeternity.com>'
