@@ -1,40 +1,14 @@
 version: '3.2'
 services:
-  hc_node1:
-    image: aeternity/aeternity:master
-    hostname: hc_node1
-    environment:
-      AETERNITY_CONFIG: /home/aeternity/aeternity.json
-      AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
-    volumes:
-      - ${PWD}/node/hyperchain/config.json:/home/aeternity/aeternity.json
-      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/data/aecore/.iris/hc_devnet_accounts.json
-      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/data/aecore/.iris/hc_devnet_contracts.json
-      - ae_hc_node1_db:/home/aeternity/node/data/mnesia
-    ports:
-     - "33013:3013"
-     - "33113:3113"
-     - "33014:3014"
-     - "33313:3313"
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:3013/v2/status"]
-        start_period: 10s
-        interval: 3s
-        timeout: 10s
-        retries: 5
-    depends_on:
-      node1:
-        condition: service_healthy
-
   hc_mdw:
-    # platform: linux/x86_64
+    platform: linux/x86_64
     # image: aeternity/ae_mdw:1.38.0
     image: aeternity/ae_mdw:local-hc
     build:
       context: https://github.com/aeternity/ae_mdw.git
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-        NODE_URL: https://builds.aeternity.io/aeternity-a3b80051613a67d835e675e41898fd0fece9f0a5-ubuntu-x86_64.tar.gz
+        NODE_URL: https://releases.aeternity.io/aeternity-v6.8.1-ubuntu-x86_64.tar.gz
     hostname: hc_mdw
     ports:
       - "24000:4000" #MDW's default port
@@ -46,8 +20,8 @@ services:
       - ${PWD}/node/hyperchain/config.json:/home/aeternity/aeternity.json
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
       - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
-      - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
-      - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
+      # - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
+      # - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
@@ -67,33 +41,29 @@ services:
     platform: linux/x86_64
     image: aeternity/aepp-faucet-nodejs
     environment:
-      NODE_URL: http://mdw:23013/
-      EPOCH_URL_DEBUG: http://mdw:23113/
+      NODE_URL: http://hc_mdw:3013/
+      EPOCH_URL_DEBUG: http://hc_mdw:3113/
       EXPLORER_URL: http://localhost:28020
       FAUCET_ACCOUNT_PRIV_KEY: EE796C442F410F8B1AACFA877A3FE734BC79CE90C8272570AC1DD8CDAC38F104D9CA6CADC0630D0A817C4756E87994B1F3FEA058AECC16720F2A33474B138710
     ports:
      - "28030:5000"
     depends_on:
-      mdw:
+      hc_mdw:
         condition: service_healthy
 
   hc_explorer:
-    image: aeternity/mdw-frontend:local-hc
-    build:
-      context: https://github.com/aeternity/mdw-frontend.git
-      dockerfile: nginx.Dockerfile
-      args:
-        NUXT_APP_NODE_URL: http://localhost:23013/v3
-
-        NUXT_APP_MDW_URL: http://localhost:24000
-        NUXT_APP_NODE_WS: ws://localhost:24001/websocket
-
-        NUXT_APP_OTHER_DEPLOYMENTS: ""
-        NUXT_APP_NETWORK_NAME: HYPERCHAIN LOCAL
-        NUXT_APP_ENABLE_FAUCET: ""
-        NUXT_APP_FAUCET_API: http://localhost:28030/account
+    image: aeternity/mdw-frontend
     ports:
-     - "28020:80"
+     - "28020:3000"
+    environment:
+      NUXT_APP_NODE_URL: http://localhost:23013/v3
+      NUXT_APP_MDW_URL: http://localhost:24000
+      NUXT_APP_NODE_WS: ws://localhost:24001/websocket
+
+      NUXT_APP_OTHER_DEPLOYMENTS: ""
+      NUXT_APP_NETWORK_NAME: HYPERCHAIN LOCAL
+      NUXT_APP_ENABLE_FAUCET: ""
+      NUXT_APP_FAUCET_API: http://localhost:28030/account
 
   hc_base_backend:
     image: aeternity/aepp-base-backend:local-hc
@@ -109,8 +79,7 @@ services:
   hc_base:
     image: aeternity/aepp-base:local-hc
     build:
-      context: https://github.com/aeternity/aepp-base.git#custom_network_build
-      # context: ../aepp-base
+      context: https://github.com/aeternity/aepp-base.git#develop
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         VUE_APP_NETWORK_NAME: Hyperchain Local
@@ -129,13 +98,13 @@ services:
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
-      AE_NODE_URL: "http://mdw:23013/"
+      AE_NODE_URL: "http://hc_mdw:3013/"
       STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
       HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
     ports:
      - "8000:3000"
     depends_on:
-      mdw:
+      hc_mdw:
         condition: service_healthy
 
 volumes:

@@ -53,7 +53,7 @@
             }
           ]
         },
-        "name": "hyper_chain"
+        "type": "hyper_chain"
       }
     },
     "persist": true,

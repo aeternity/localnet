@@ -1,7 +1,7 @@
 version: '3'
 services:
   node1:
-    image: aeternity/aeternity:master
+    image: aeternity/aeternity:v6.8.1
     hostname: node1
     environment:
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
@@ -74,6 +74,7 @@ services:
       NUXT_APP_NODE_URL: http://localhost:3013/v3
       NUXT_APP_MDW_URL: http://localhost:4000
       NUXT_APP_NODE_WS: ws://localhost:4001/websocket
+
       NUXT_APP_OTHER_DEPLOYMENTS: ""
       NUXT_APP_NETWORK_NAME: DEVNET LOCAL
       NUXT_APP_ENABLE_FAUCET: "false"
@@ -97,7 +98,7 @@ services:
     image: aeternity/aepp-base:devnet
     platform: linux/x86_64
     build:
-      context: https://github.com/aeternity/aepp-base.git
+      context: https://github.com/aeternity/aepp-base.git#develop
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         VUE_APP_NETWORK_NAME: Devnet (local)
