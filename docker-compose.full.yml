@@ -1,38 +1,19 @@
 version: '3'
 services:
-  node1:
-    image: aeternity/aeternity:v6.8.1
-    hostname: node1
-    environment:
-      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
-      AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
-    volumes:
-      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
-      - ${PWD}/node/config/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
-      - ${PWD}/node/keys/node1:/home/aeternity/node/keys
-      - ae_node1_db:/home/aeternity/node/data/mnesia
-    ports:
-     - "3013:3013"
-     - "3113:3113"
-     - "3014:3014"
-     - "3313:3313"
-    healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:3013/v2/status"]
-        start_period: 10s
-        interval: 3s
-        timeout: 10s
-        retries: 5
-
   mdw:
     image: aeternity/ae_mdw:1.38.0
     platform: linux/x86_64
     hostname: mdw
+    networks:
+      default:
+        aliases:
+          - "aeternity.localhost"
     ports:
       - "4000:4000" #MDW's default port
       - "4001:4001" #MDW's websocket default port
-      - "13113:3113" #Node's default internal API port
-      - "13013:3013" #Node's default external API port
-      - "13014:3014" #Node's channels default websocket port
+      - "3113:3113" #Node's default internal API port
+      - "3013:3013" #Node's default external API port
+      - "3014:3014" #Node's channels default websocket port
     volumes:
       - ${PWD}/node/config/node2_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/config/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.genesis/accounts_test.json
@@ -56,14 +37,14 @@ services:
     image: aeternity/aepp-faucet-nodejs
     platform: linux/x86_64
     environment:
-      NODE_URL: http://node1:3013/
-      EPOCH_URL_DEBUG: http://node1:3113/
+      NODE_URL: http://mdw:3013/
+      EPOCH_URL_DEBUG: http://mdw:3113/
       EXPLORER_URL: http://localhost:8020
       FAUCET_ACCOUNT_PRIV_KEY: EE796C442F410F8B1AACFA877A3FE734BC79CE90C8272570AC1DD8CDAC38F104D9CA6CADC0630D0A817C4756E87994B1F3FEA058AECC16720F2A33474B138710
     ports:
      - "8030:5000"
     depends_on:
-      node1:
+      mdw:
         condition: service_healthy
 
   explorer:
@@ -71,8 +52,8 @@ services:
     ports:
       - "8020:3000"
     environment:
-      NUXT_APP_NODE_URL: http://localhost:3013/v3
-      NUXT_APP_MDW_URL: http://localhost:4000
+      NUXT_APP_NODE_URL: http://aeternity.localhost:3013/v3
+      NUXT_APP_MDW_URL: http://aeternity.localhost:4000
       NUXT_APP_NODE_WS: ws://localhost:4001/websocket
 
       NUXT_APP_OTHER_DEPLOYMENTS: ""

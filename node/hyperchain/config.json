@@ -20,7 +20,7 @@
               "fetch_interval": 100,
               "nodes": [
                 {
-                  "host": "node1",
+                  "host": "mdw",
                   "port": 3013,
                   "user": "not used",
                   "password": "not used",
