@@ -16,7 +16,7 @@ services:
     networks:
       default:
         aliases:
-          - "mdw.aeternity.localhost"
+          - "hc-mdw.aeternity.localhost"
     ports:
       - "24000:24000" #MDW's default port
       - "24001:24001" #MDW's websocket default port
@@ -27,8 +27,8 @@ services:
       - ${PWD}/node/hyperchain/config.json:/home/aeternity/aeternity.json
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
       - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
-      # - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
-      # - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
+      - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
+      - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
@@ -68,8 +68,8 @@ services:
     ports:
      - "28020:3000"
     environment:
-      NUXT_APP_NODE_URL: http://mdw.aeternity.localhost:23013/v3
-      NUXT_APP_MDW_URL: http://mdw.aeternity.localhost:24000
+      NUXT_APP_NODE_URL: http://hc-mdw.aeternity.localhost:23013/v3
+      NUXT_APP_MDW_URL: http://hc-mdw.aeternity.localhost:24000
       NUXT_APP_NODE_WS: ws://localhost:24001/websocket
 
       NUXT_APP_OTHER_DEPLOYMENTS: ""
@@ -110,7 +110,7 @@ services:
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
-      AE_NODE_URL: "http://mdw.aeternity.localhost:23013/"
+      AE_NODE_URL: "http://hc-mdw.aeternity.localhost:23013/"
       STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
       HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
     ports:
