@@ -24,7 +24,6 @@ services:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
-      NETWORK_ID: devnet
       AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:4000/status"]

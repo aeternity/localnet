@@ -33,7 +33,6 @@ services:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
       AETERNITY_CONFIG: /home/aeternity/aeternity.json
-      NETWORK_ID: hc_devnet
       PORT: 24000
       WS_PORT: 24001
       AE__HTTP__EXTERNAL__PORT: 23013
