@@ -120,9 +120,38 @@ services:
       STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
       HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
     ports:
-     - "8000:3000"
+     - "28040:3000"
     depends_on:
       hc_mdw:
+        condition: service_healthy
+
+  hc_static:
+    image: nginx:1.13.8
+    ports:
+        - 8080:80
+    volumes:
+        - ${PWD}/nginx/html/hyperchain:/usr/share/nginx/html
+    healthcheck:
+        test: ["CMD", "service", "nginx", "status"]
+        start_period: 3s
+        interval: 3s
+        timeout: 1s
+        retries: 5
+    depends_on:
+      mdw:
+        condition: service_healthy
+      base:
+        condition: service_started
+      faucet:
+        condition: service_started
+      explorer:
+        condition: service_started
+
+  hc_instructions:
+    image: alpine
+    command: echo "!!!OPEN http://localhost:8080 FOR MORE INFROMATION ABOUT HYPERCHAIN!!!"
+    depends_on:
+      static:
         condition: service_healthy
 
 volumes:

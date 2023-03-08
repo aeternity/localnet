@@ -99,6 +99,35 @@ services:
       mdw:
         condition: service_healthy
 
+  static:
+    image: nginx:1.13.8
+    ports:
+        - 8000:80
+    volumes:
+        - ${PWD}/nginx/html/devnet:/usr/share/nginx/html
+    healthcheck:
+        test: ["CMD", "service", "nginx", "status"]
+        start_period: 3s
+        interval: 3s
+        timeout: 1s
+        retries: 5
+    depends_on:
+      mdw:
+        condition: service_healthy
+      base:
+        condition: service_started
+      faucet:
+        condition: service_started
+      explorer:
+        condition: service_started
+
+  instructions:
+    image: alpine
+    command: echo "!!!OPEN http://localhost:8000 FOR MORE INFROMATION ABOUT DEVNET!!!"
+    depends_on:
+      static:
+        condition: service_healthy
+
 volumes:
   ae_node1_db:
   ae_mdw_node_db:
