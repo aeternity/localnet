@@ -82,9 +82,7 @@ services:
         condition: service_healthy
 
   hc_base_backend:
-    image: aeternity/aepp-base-backend:local-hc
-    build:
-      context: https://github.com/aeternity/aepp-base-remote-connection-backend.git
+    image: aeternity/aepp-base-backend
     environment:
       VAPID_SUBJECT: 'mailto: <info@aeternity.com>'
       VAPID_PUBLIC_KEY: 'BKdMuWCMzVPLTY-ClCNBanQ5Thgji_VMOQKsmTGlTs5DqVyXU4aFv2eHUs2YwK3XY-RS9HdjkIRJK3E20n251Rw'
