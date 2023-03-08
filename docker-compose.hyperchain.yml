@@ -24,7 +24,7 @@ services:
       - "23013:23013" #Node's default external API port
       - "23014:23014" #Node's channels default websocket port
     volumes:
-      - ${PWD}/node/hyperchain/config.json:/home/aeternity/aeternity.json
+      - ${PWD}/node/hyperchain/aeternity.json:/home/aeternity/aeternity.json
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
       - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia

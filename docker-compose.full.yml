@@ -15,7 +15,7 @@ services:
       - "3013:3013" #Node's default external API port
       - "3014:3014" #Node's channels default websocket port
     volumes:
-      - ${PWD}/node/config/node2_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/config/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.genesis/accounts_test.json
       - ${PWD}/node/keys/node2:/home/aeternity/node/local/rel/aeternity/keys
       - ae_mdw_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia

@@ -25,6 +25,3 @@ system:
     plugins:
         -
           name: aeplugin_dev_mode
-
-fork_management:
-    network_id: devnet
