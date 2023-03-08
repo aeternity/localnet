@@ -39,6 +39,7 @@ services:
       AE__HTTP__EXTERNAL__PORT: 23013
       AE__HTTP__INTERNAL__PORT: 23113
       AE__WEBSOCKET__CHANNEL__PORT: 23014
+      AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:24000/status"]
         start_period: 20s
@@ -76,6 +77,9 @@ services:
       NUXT_APP_NETWORK_NAME: HYPERCHAIN LOCAL
       NUXT_APP_ENABLE_FAUCET: ""
       NUXT_APP_FAUCET_API: http://localhost:28030/account
+    depends_on:
+      hc_mdw:
+        condition: service_healthy
 
   hc_base_backend:
     image: aeternity/aepp-base-backend:local-hc
@@ -86,7 +90,7 @@ services:
       VAPID_PUBLIC_KEY: 'BKdMuWCMzVPLTY-ClCNBanQ5Thgji_VMOQKsmTGlTs5DqVyXU4aFv2eHUs2YwK3XY-RS9HdjkIRJK3E20n251Rw'
       VAPID_PRIVATE_KEY: 'LzjNvVH109jxcAGDMe59zLM-gNaeo9QypJl82Thtmts'
     ports:
-     - "28021:8079"
+     - "28011:8079"
 
   hc_base:
     image: aeternity/aepp-base:local-hc
@@ -99,10 +103,15 @@ services:
         VUE_APP_MDW_URL: http://localhost:24000
         VUE_APP_EXPLORER_URL: http://localhost:28020
         VUE_APP_COMPILER_URL: http://localhost:8040
-        VUE_APP_REMOTE_CONNECTION_BACKEND_URL: http://localhost:28021
+        VUE_APP_REMOTE_CONNECTION_BACKEND_URL: http://localhost:28011
     environment: {}
     ports:
      - "28010:80"
+    depends_on:
+      hc_base_backend:
+        condition: service_started
+      hc_mdw:
+        condition: service_healthy
 
   ui:
     platform: linux/x86_64
@@ -120,6 +129,5 @@ services:
         condition: service_healthy
 
 volumes:
-  # ae_hc_node1_db:
   ae_hyperchain_node_db:
   ae_hyperchain_mdw_db:

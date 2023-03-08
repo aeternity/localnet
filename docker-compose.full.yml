@@ -60,6 +60,9 @@ services:
       NUXT_APP_NETWORK_NAME: DEVNET LOCAL
       NUXT_APP_ENABLE_FAUCET: "false"
       NUXT_APP_FAUCET_API: http://localhost:8030/account
+    depends_on:
+      mdw:
+        condition: service_healthy
 
   compiler:
     image: aeternity/aesophia_http:v6.1.0
@@ -91,6 +94,11 @@ services:
     environment: {}
     ports:
      - "8010:80"
+    depends_on:
+      base_backend:
+        condition: service_started
+      mdw:
+        condition: service_healthy
 
 volumes:
   ae_node1_db:
