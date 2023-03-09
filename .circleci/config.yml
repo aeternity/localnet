@@ -38,7 +38,7 @@ commands:
         default: ""
     steps:
       - run:
-          name: Health check APIs
+          name: Health check node APIs
           command: |
             MIN_PEERS=<< parameters.min_peers >> \
             EXTERNAL_ADDR=localhost:<< parameters.external_port >><< parameters.path_prefix >> \
@@ -83,16 +83,23 @@ commands:
           external_port: 3013
           internal_port: 3113
           websocket_port: 3014
-      - health_check_node:
-          min_peers: 2
-      - health_check_node:
-          min_peers: 2
-      - health_check_node:
-          min_peers: 2
       - run:
           name: Health check Middleware
           command: |
             curl -sSf -o /dev/null --retry 6 http://localhost:4000/status || exit 2
+
+  integration_tests_hyperchain:
+    description: Integration Tests - Hyperchain
+    steps:
+      - health_check_node:
+          min_peers: 0
+          external_port: 23013
+          internal_port: 23113
+          websocket_port: 23014
+      - run:
+          name: Health check Middleware
+          command: |
+            curl -sSf -o /dev/null --retry 6 http://localhost:24000/status || exit 2
 
 jobs:
   integration_tests:
@@ -119,8 +126,19 @@ jobs:
       - checkout
       - run_test_nodes:
           config: -f docker-compose.full.yml
-          wait_time: 360
+          wait_time: 300
       - integration_tests_full
+
+  integration_tests_hyperchain:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - run_test_nodes:
+          config: -f docker-compose.full.yml -f docker-compose.hyperchain.yml
+          wait_time: 300
+      - integration_tests_full
+      - integration_tests_hyperchain
 
 workflows:
   test:
