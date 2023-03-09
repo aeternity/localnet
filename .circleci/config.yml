@@ -72,6 +72,25 @@ commands:
           min_peers: 2
           path_prefix: /node3
 
+  integration_tests_full:
+    description: Integration Tests - Full
+    steps:
+      - health_check_node:
+          min_peers: 0
+          external_port: 3013
+          internal_port: 3113
+          websocket_port: 3014
+      - health_check_node:
+          min_peers: 2
+      - health_check_node:
+          min_peers: 2
+      - health_check_node:
+          min_peers: 2
+      - run:
+          name: Health check Middleware
+          command: |
+            curl -sSf -o /dev/null --retry 6 http://localhost:4000/status || exit 2
+
 jobs:
   integration_tests:
     machine:
@@ -90,10 +109,21 @@ jobs:
           config: -f docker-compose.multi.yml
       - integration_tests_multi
 
+  integration_tests_full:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - run_test_nodes:
+          config: -f docker-compose.full.yml
+      - integration_tests_full
+
 workflows:
   test:
     jobs:
       - integration_tests:
           requires: []
       - integration_tests_multi:
+          requires: []
+      - integration_tests_full:
           requires: []
