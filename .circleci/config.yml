@@ -149,3 +149,5 @@ workflows:
           requires: []
       - integration_tests_full:
           requires: []
+      - integration_tests_hyperchain:
+          requires: []
