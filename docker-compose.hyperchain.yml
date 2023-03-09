@@ -5,8 +5,7 @@ services:
     # image: aeternity/ae_mdw:1.41.3
     image: aeternity/ae_mdw:local-hc
     build:
-      # context: https://github.com/aeternity/ae_mdw.git
-      context: ../ae_mdw
+      context: https://github.com/aeternity/ae_mdw.git
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         NODE_URL: https://releases.aeternity.io/aeternity-v6.8.1-ubuntu-x86_64.tar.gz
