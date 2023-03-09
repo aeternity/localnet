@@ -100,8 +100,7 @@ jobs:
       image: ubuntu-2004:202201-02
     steps:
       - checkout
-      - run_test_nodes:
-          wait_time: 300
+      - run_test_nodes
       - integration_tests
 
   integration_tests_multi:
@@ -120,6 +119,7 @@ jobs:
       - checkout
       - run_test_nodes:
           config: -f docker-compose.full.yml
+          wait_time: 300
       - integration_tests_full
 
 workflows:
