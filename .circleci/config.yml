@@ -6,6 +6,9 @@ commands:
       config:
         type: string
         default: -f docker-compose.yml
+      wait_time:
+        type: string
+        default: 30
     steps:
       - run:
           name: Run nodes in background
@@ -13,7 +16,7 @@ commands:
           background: true
       - run:
           name: Give it some time to boot the nodes
-          command: sleep 30
+          command: sleep << parameters.wait_time >>
 
   health_check_node:
     description: Health Check a Node
@@ -97,7 +100,8 @@ jobs:
       image: ubuntu-2004:202201-02
     steps:
       - checkout
-      - run_test_nodes
+      - run_test_nodes:
+          wait_time: 300
       - integration_tests
 
   integration_tests_multi:
