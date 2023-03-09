@@ -7,7 +7,7 @@ services:
     networks:
       default:
         aliases:
-          - "mdw.aeternity.localhost"
+          - "mdw.local.gd"
     ports:
       - "4000:4000" #MDW's default port
       - "4001:4001" #MDW's websocket default port
@@ -51,8 +51,8 @@ services:
     ports:
       - "8020:3000"
     environment:
-      NUXT_APP_NODE_URL: http://mdw.aeternity.localhost:3013/v3
-      NUXT_APP_MDW_URL: http://mdw.aeternity.localhost:4000
+      NUXT_APP_NODE_URL: http://mdw.local.gd:3013/v3
+      NUXT_APP_MDW_URL: http://mdw.local.gd:4000
       NUXT_APP_NODE_WS: ws://localhost:4001/websocket
 
       NUXT_APP_OTHER_DEPLOYMENTS: ""

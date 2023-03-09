@@ -16,7 +16,7 @@ services:
     networks:
       default:
         aliases:
-          - "hc-mdw.aeternity.localhost"
+          - "hc-mdw.local.gd"
     ports:
       - "24000:24000" #MDW's default port
       - "24001:24001" #MDW's websocket default port
@@ -68,8 +68,8 @@ services:
     ports:
      - "28020:3000"
     environment:
-      NUXT_APP_NODE_URL: http://hc-mdw.aeternity.localhost:23013/v3
-      NUXT_APP_MDW_URL: http://hc-mdw.aeternity.localhost:24000
+      NUXT_APP_NODE_URL: http://hc-mdw.local.gd:23013/v3
+      NUXT_APP_MDW_URL: http://hc-mdw.local.gd:24000
       NUXT_APP_NODE_WS: ws://localhost:24001/websocket
 
       NUXT_APP_OTHER_DEPLOYMENTS: ""
@@ -116,7 +116,7 @@ services:
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
-      AE_NODE_URL: "http://hc-mdw.aeternity.localhost:23013/"
+      AE_NODE_URL: "http://hc-mdw.local.gd:23013/"
       STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
       HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
     ports:
