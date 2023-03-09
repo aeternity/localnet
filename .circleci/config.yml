@@ -119,7 +119,7 @@ jobs:
       - checkout
       - run_test_nodes:
           config: -f docker-compose.full.yml
-          wait_time: 300
+          wait_time: 360
       - integration_tests_full
 
 workflows:
