@@ -7,7 +7,7 @@ commands:
         type: string
         default: -f docker-compose.yml
       wait_time:
-        type: string
+        type: integer
         default: 30
     steps:
       - run:
