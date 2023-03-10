@@ -136,7 +136,7 @@ jobs:
       - checkout
       - run_test_nodes:
           config: -f docker-compose.full.yml -f docker-compose.hyperchain.yml
-          wait_time: 300
+          wait_time: 480 #TODO lower down once we switch to MDW DH image
       - integration_tests_full
       - integration_tests_hyperchain
 
