@@ -2,8 +2,8 @@ version: '3.2'
 services:
   hc_mdw:
     platform: linux/x86_64
-    # image: aeternity/ae_mdw:1.41.3
-    image: aeternity/ae_mdw:local-hc
+    image: aeternity/ae_mdw:1.55.1
+    # image: aeternity/ae_mdw:local-hc
     build:
       context: https://github.com/aeternity/ae_mdw.git
       args:

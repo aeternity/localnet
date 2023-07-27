@@ -1,7 +1,7 @@
 version: '3'
 services:
   mdw:
-    image: aeternity/ae_mdw:1.38.0
+    image: aeternity/ae_mdw:1.55.1
     platform: linux/x86_64
     hostname: mdw
     networks:
@@ -17,7 +17,7 @@ services:
     volumes:
       - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/config/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.genesis/accounts_test.json
-      - ${PWD}/node/keys/node2:/home/aeternity/node/local/rel/aeternity/keys
+      - ${PWD}/node/keys/node1:/home/aeternity/node/local/rel/aeternity/keys
       - ae_mdw_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
@@ -129,6 +129,5 @@ services:
         condition: service_healthy
 
 volumes:
-  ae_node1_db:
   ae_mdw_node_db:
   ae_mdw_db:
