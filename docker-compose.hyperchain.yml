@@ -112,7 +112,7 @@ services:
 
   ui:
     platform: linux/x86_64
-    image: aeternity/aepp-hc-ui:pr-10
+    image: aeternity/aepp-hc-ui:pr-13
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
