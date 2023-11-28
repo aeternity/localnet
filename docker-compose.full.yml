@@ -1,7 +1,7 @@
 version: '3'
 services:
   mdw:
-    image: aeternity/ae_mdw:1.55.1
+    image: aeternity/ae_mdw:1.66.3
     platform: linux/x86_64
     hostname: mdw
     networks:

@@ -2,7 +2,7 @@ version: '3.2'
 services:
   hc_mdw:
     platform: linux/x86_64
-    image: aeternity/ae_mdw:1.55.1
+    image: aeternity/ae_mdw:1.66.3
     # image: aeternity/ae_mdw:local-hc
     build:
       context: https://github.com/aeternity/ae_mdw.git
@@ -23,7 +23,7 @@ services:
       - "23013:23013" #Node's default external API port
       - "23014:23014" #Node's channels default websocket port
     volumes:
-      - ${PWD}/node/hyperchain/aeternity.json:/home/aeternity/aeternity.json
+      - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
       - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
@@ -31,7 +31,7 @@ services:
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
-      AETERNITY_CONFIG: /home/aeternity/aeternity.json
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
       PORT: 24000
       WS_PORT: 24001
       AE__HTTP__EXTERNAL__PORT: 23013
