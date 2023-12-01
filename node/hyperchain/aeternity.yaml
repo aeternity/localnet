@@ -6,7 +6,7 @@ chain:
         election_contract: 'ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA'
         expected_key_block_rate: 2000
         parent_chain:
-          confirmations: 6
+          confirmations: 0
           consensus:
             amount: 9700
             fee: 100000000000000
