@@ -1,27 +1,30 @@
 chain:
   consensus:
     '0':
+      type: 'hyper_chain'
       config:
         contract_owner: 'ak_11111111111111111111111111111115rHyByZ'
         election_contract: 'ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA'
-        expected_key_block_rate: 2000
+        rewards_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
+        expected_key_block_rate: 30000
+        lazy_leader_trigger_time: 5000
         parent_chain:
           confirmations: 0
+          start_height: 10
+          producing_commitments: true
           consensus:
-            amount: 9700
             fee: 100000000000000
+            amount: 1
             network_id: 'devnet'
             spend_address: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
             type: 'AE2AE'
           polling:
-            fetch_interval: 500
+            fetch_interval: 250
             nodes:
               - host: 'mdw'
-                password: ''
                 port: 3013
-                user: ''
-          start_height: 2
-        rewards_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
+                user: 'not used'
+                password: 'not used'
         stakers:
           - hyper_chain_account:
               priv: 'f191dcb1fc96fadf6c08677e7a479288977db3feab9375dd39ff85db187d851ab8440e688d6737ae51741b668c97def0bf8eff7159f77b9fd1b5b4f2c614fce4'
@@ -41,7 +44,6 @@ chain:
             parent_chain_account:
               priv: '91450EFE0516C24476390086426008147CFDEECFE6935FADA1C056C3A5BA73FBB1B577BCD327CB39E55E6C026BD6A74A1B35DE6C0650C4AE51EFAB759E415B66'
               pub: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
-      type: 'hyper_chain'
   db_direct_access: true
   hard_forks:
     '5': 0

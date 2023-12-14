@@ -1,8 +1,14 @@
 version: '3'
 services:
   mdw:
-    image: aeternity/ae_mdw:1.66.3
     platform: linux/x86_64
+    image: aeternity/ae_mdw:1.66.4
+    # image: aeternity/ae_mdw:local
+    # build:
+    #   context: https://github.com/aeternity/ae_mdw.git
+    #   args:
+    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+    #     NODE_VERSION: 6.12.0
     hostname: mdw
     networks:
       default:
@@ -78,19 +84,15 @@ services:
      - "8011:8079"
 
   base:
-    image: aeternity/aepp-base:devnet
+    image: aeternitybot/aepp-base:develop
     platform: linux/x86_64
-    build:
-      context: https://github.com/aeternity/aepp-base.git#develop
-      args:
-        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-        VUE_APP_NETWORK_NAME: Devnet (local)
-        VUE_APP_NODE_URL: http://localhost:3013
-        VUE_APP_MDW_URL: http://localhost:4000
-        VUE_APP_EXPLORER_URL: http://localhost:8020
-        VUE_APP_COMPILER_URL: http://localhost:8040
-        VUE_APP_REMOTE_CONNECTION_BACKEND_URL: http://localhost:8011
-    environment: {}
+    environment:
+      VUE_APP_NETWORK_NAME: Devnet (local)
+      VUE_APP_NODE_URL: http://localhost:3013
+      VUE_APP_MIDDLEWARE_URL: http://localhost:4000
+      VUE_APP_EXPLORER_URL: http://localhost:8020
+      VUE_APP_COMPILER_URL: http://localhost:8040
+      VUE_APP_BACKEND_URL: http://localhost:8011
     ports:
      - "8010:80"
     depends_on:

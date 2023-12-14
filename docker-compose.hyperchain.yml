@@ -2,15 +2,13 @@ version: '3.2'
 services:
   hc_mdw:
     platform: linux/x86_64
-    image: aeternity/ae_mdw:1.66.3
+    image: aeternity/ae_mdw:1.66.4
     # image: aeternity/ae_mdw:local-hc
-    build:
-      context: https://github.com/aeternity/ae_mdw.git
-      args:
-        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-        NODE_URL: https://releases.aeternity.io/aeternity-v6.8.1-ubuntu-x86_64.tar.gz
-        PORT: 24000
-        WS_PORT: 24001
+    # build:
+    #   context: https://github.com/aeternity/ae_mdw.git
+    #   args:
+    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+    #     NODE_VERSION: 6.12.0
     hostname: hc_mdw
     networks:
       default:
@@ -55,7 +53,7 @@ services:
       NODE_URL: http://hc_mdw:23013/
       EPOCH_URL_DEBUG: http://hc_mdw:23113/
       EXPLORER_URL: http://localhost:28020
-      FAUCET_ACCOUNT_PRIV_KEY: EE796C442F410F8B1AACFA877A3FE734BC79CE90C8272570AC1DD8CDAC38F104D9CA6CADC0630D0A817C4756E87994B1F3FEA058AECC16720F2A33474B138710
+      FAUCET_ACCOUNT_PRIV_KEY: 1327C9AD3650EF196DDF156E8F53FA01294C68D57A1DF5363AAB03EC314C8A270CF6CB1DCC6B8FC14DEF3F66B834D881CFBB5C120934903DCD859FC05675429E
     ports:
      - "28030:5000"
     depends_on:
@@ -89,19 +87,15 @@ services:
      - "28011:8079"
 
   hc_base:
-    image: aeternity/aepp-base:local-hc
+    image: aeternitybot/aepp-base:develop
     platform: linux/x86_64
-    build:
-      context: https://github.com/aeternity/aepp-base.git#develop
-      args:
-        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-        VUE_APP_NETWORK_NAME: Hyperchain Local
-        VUE_APP_NODE_URL: http://localhost:23013
-        VUE_APP_MDW_URL: http://localhost:24000
-        VUE_APP_EXPLORER_URL: http://localhost:28020
-        VUE_APP_COMPILER_URL: http://localhost:8040
-        VUE_APP_REMOTE_CONNECTION_BACKEND_URL: http://localhost:28011
-    environment: {}
+    environment:
+      VUE_APP_NETWORK_NAME: Hyperchain Local
+      VUE_APP_NODE_URL: http://localhost:23013
+      VUE_APP_MIDDLEWARE_URL: http://localhost:24000
+      VUE_APP_EXPLORER_URL: http://localhost:28020
+      VUE_APP_COMPILER_URL: http://localhost:8040
+      VUE_APP_BACKEND_URL: http://localhost:28011
     ports:
      - "28010:80"
     depends_on:
