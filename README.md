@@ -87,6 +87,29 @@ For example to access `node2` API (status), assuming docker host address is `loc
 curl http://localhost:8080/node2/v2/status
 ```
 
+### Full infrastructure configuration
+
+This configuration includes a node+middleware, explorer, base wallet, faucet and compiler.
+To boot it run:
+
+```bash
+docker-compose -f docker-compose.full.yml up -d
+```
+
+List of all services and their URLs can be found at: http://localhost:8000
+
+### Hyperchains configuration
+
+This configuration runs the full infrastructure (see above) as *parent chain* and a copy of it as *child chain* + Hyperchains UI.
+To boot it run:
+
+```bash
+docker-compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
+```
+
+List of all *parent chain* services and their URLs can be found at: http://localhost:8000
+List of all *child chain* services and their URLs can be found at: http://localhost:8080
+
 ### Image Version
 
 3 node configuration uses the `aeternity/aeternity:latest` image by default, it will be pulled from [docker hub](https://hub.docker.com/r/aeternity/aeternity/) if it's not found locally.
