@@ -1,0 +1,135 @@
+version: '3'
+services:
+  mdw:
+    platform: linux/x86_64
+    image: aeternity/ae_mdw:1.66.4
+    # image: aeternity/ae_mdw:local
+    # build:
+    #   context: https://github.com/aeternity/ae_mdw.git
+    #   args:
+    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+    #     NODE_VERSION: 6.12.0
+    hostname: mdw
+    networks:
+      default:
+        aliases:
+          - "mdw.local.gd"
+    ports:
+      - "4000:4000" #MDW's default port
+      - "4001:4001" #MDW's websocket default port
+      - "3113:3113" #Node's default internal API port
+      - "3013:3013" #Node's default external API port
+      - "3014:3014" #Node's channels default websocket port
+    volumes:
+      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/config/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.genesis/accounts_test.json
+      - ${PWD}/node/keys/node1:/home/aeternity/node/local/rel/aeternity/keys
+      - ae_mdw_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
+      - ae_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
+    environment:
+      # workaround
+      TELEMETRY_STATSD_HOST: localhost
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+      AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:4000/status"]
+        start_period: 20s
+        interval: 3s
+        timeout: 10s
+        retries: 5
+
+  faucet:
+    image: aeternity/aepp-faucet-nodejs
+    platform: linux/x86_64
+    environment:
+      NODE_URL: http://mdw:3013/
+      EPOCH_URL_DEBUG: http://mdw:3113/
+      EXPLORER_URL: http://localhost:8020
+      FAUCET_ACCOUNT_PRIV_KEY: EE796C442F410F8B1AACFA877A3FE734BC79CE90C8272570AC1DD8CDAC38F104D9CA6CADC0630D0A817C4756E87994B1F3FEA058AECC16720F2A33474B138710
+    ports:
+     - "8030:5000"
+    depends_on:
+      mdw:
+        condition: service_healthy
+
+  explorer:
+    image: aeternity/mdw-frontend
+    ports:
+      - "8020:3000"
+    environment:
+      NUXT_APP_NODE_URL: http://mdw.local.gd:3013/v3
+      NUXT_APP_MDW_URL: http://mdw.local.gd:4000
+      NUXT_APP_NODE_WS: ws://localhost:4001/websocket
+
+      NUXT_APP_OTHER_DEPLOYMENTS: ""
+      NUXT_APP_NETWORK_NAME: DEVNET LOCAL
+      NUXT_APP_ENABLE_FAUCET: "false"
+      NUXT_APP_FAUCET_API: http://localhost:8030/account
+    depends_on:
+      mdw:
+        condition: service_healthy
+
+  compiler:
+    image: aeternity/aesophia_http:v6.1.0
+    ports:
+      - "8040:3080"
+
+  base_backend:
+    image: aeternity/aepp-base-backend
+    environment:
+      VAPID_SUBJECT: 'mailto: <info@aeternity.com>'
+      VAPID_PUBLIC_KEY: 'BKdMuWCMzVPLTY-ClCNBanQ5Thgji_VMOQKsmTGlTs5DqVyXU4aFv2eHUs2YwK3XY-RS9HdjkIRJK3E20n251Rw'
+      VAPID_PRIVATE_KEY: 'LzjNvVH109jxcAGDMe59zLM-gNaeo9QypJl82Thtmts'
+    ports:
+     - "8011:8079"
+
+  base:
+    image: aeternitybot/aepp-base:develop
+    platform: linux/x86_64
+    environment:
+      VUE_APP_NETWORK_NAME: Devnet (local)
+      VUE_APP_NODE_URL: http://localhost:3013
+      VUE_APP_MIDDLEWARE_URL: http://localhost:4000
+      VUE_APP_EXPLORER_URL: http://localhost:8020
+      VUE_APP_COMPILER_URL: http://localhost:8040
+      VUE_APP_BACKEND_URL: http://localhost:8011
+    ports:
+     - "8010:80"
+    depends_on:
+      base_backend:
+        condition: service_started
+      mdw:
+        condition: service_healthy
+
+  static:
+    image: nginx:1.13.8
+    ports:
+        - 8000:80
+    volumes:
+        - ${PWD}/nginx/html/devnet:/usr/share/nginx/html
+    healthcheck:
+        test: ["CMD", "service", "nginx", "status"]
+        start_period: 3s
+        interval: 3s
+        timeout: 1s
+        retries: 5
+    depends_on:
+      mdw:
+        condition: service_healthy
+      base:
+        condition: service_started
+      faucet:
+        condition: service_started
+      explorer:
+        condition: service_started
+
+  instructions:
+    image: alpine
+    command: echo "!!!OPEN http://localhost:8000 FOR MORE INFROMATION ABOUT DEVNET!!!"
+    depends_on:
+      static:
+        condition: service_healthy
+
+volumes:
+  ae_mdw_node_db:
+  ae_mdw_db:

@@ -6,6 +6,9 @@ commands:
       config:
         type: string
         default: -f docker-compose.yml
+      wait_time:
+        type: integer
+        default: 30
     steps:
       - run:
           name: Run nodes in background
@@ -13,7 +16,7 @@ commands:
           background: true
       - run:
           name: Give it some time to boot the nodes
-          command: sleep 30
+          command: sleep << parameters.wait_time >>
 
   health_check_node:
     description: Health Check a Node
@@ -35,7 +38,7 @@ commands:
         default: ""
     steps:
       - run:
-          name: Health check APIs
+          name: Health check node APIs
           command: |
             MIN_PEERS=<< parameters.min_peers >> \
             EXTERNAL_ADDR=localhost:<< parameters.external_port >><< parameters.path_prefix >> \
@@ -72,6 +75,32 @@ commands:
           min_peers: 2
           path_prefix: /node3
 
+  integration_tests_full:
+    description: Integration Tests - Full
+    steps:
+      - health_check_node:
+          min_peers: 0
+          external_port: 3013
+          internal_port: 3113
+          websocket_port: 3014
+      - run:
+          name: Health check Middleware
+          command: |
+            curl -sSf -o /dev/null --retry 6 http://localhost:4000/status || exit 2
+
+  integration_tests_hyperchain:
+    description: Integration Tests - Hyperchain
+    steps:
+      - health_check_node:
+          min_peers: 0
+          external_port: 23013
+          internal_port: 23113
+          websocket_port: 23014
+      - run:
+          name: Health check Middleware
+          command: |
+            curl -sSf -o /dev/null --retry 6 http://localhost:24000/status || exit 2
+
 jobs:
   integration_tests:
     machine:
@@ -90,10 +119,35 @@ jobs:
           config: -f docker-compose.multi.yml
       - integration_tests_multi
 
+  integration_tests_full:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - run_test_nodes:
+          config: -f docker-compose.full.yml
+          wait_time: 300
+      - integration_tests_full
+
+  integration_tests_hyperchain:
+    machine:
+      image: ubuntu-2004:202201-02
+    steps:
+      - checkout
+      - run_test_nodes:
+          config: -f docker-compose.full.yml -f docker-compose.hyperchain.yml
+          wait_time: 480 #TODO lower down once we switch to MDW DH image
+      - integration_tests_full
+      - integration_tests_hyperchain
+
 workflows:
   test:
     jobs:
       - integration_tests:
           requires: []
       - integration_tests_multi:
+          requires: []
+      - integration_tests_full:
+          requires: []
+      - integration_tests_hyperchain:
           requires: []
