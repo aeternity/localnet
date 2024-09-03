@@ -23,9 +23,6 @@ keys:
 chain:
     persist: true
 
-# logging:
-#     level: debug
-
 mining:
     beneficiary: "ak_twR4h7dEcUtc2iSEDv8kB7UFJJDGiEDQCXr85C3fYF8FdVdyo"
     beneficiary_reward_delay: 2

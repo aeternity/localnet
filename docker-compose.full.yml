@@ -1,14 +1,35 @@
-version: '3'
 services:
-  mdw:
+  # Mining is supported only on linux/x86_64 and mdw doesn't run in emulation, thus an extra node to mine
+  node:
     platform: linux/x86_64
-    image: aeternity/ae_mdw:1.66.4
-    # image: aeternity/ae_mdw:local
-    # build:
-    #   context: https://github.com/aeternity/ae_mdw.git
-    #   args:
-    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-    #     NODE_VERSION: 6.12.0
+    image: aeternity/aeternity
+    hostname: node1
+    ports:
+      - "13013:3013" #Node's default external API port
+    volumes:
+      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/config/accounts.json:/home/aeternity/node/data/aecore/.genesis/accounts_test.json
+      - ${PWD}/node/keys/node1:/home/aeternity/node/keys
+      - ae_node_db:/home/aeternity/node/data/mnesia
+    environment:
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+      AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:3013/v3/status"]
+        start_period: 20s
+        interval: 3s
+        timeout: 10s
+        retries: 5
+
+  mdw:
+    # platform: linux/x86_64
+    # image: aeternity/ae_mdw:1.86.0
+    image: aeternity/ae_mdw:local
+    build:
+      context: https://github.com/aeternity/ae_mdw.git#v1.86.0
+      args:
+        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+        NODE_VERSION: 7.2.0
     hostname: mdw
     networks:
       default:
@@ -21,15 +42,17 @@ services:
       - "3013:3013" #Node's default external API port
       - "3014:3014" #Node's channels default websocket port
     volumes:
-      - ${PWD}/node/config/node1_mean15.yaml:/home/aeternity/aeternity.yaml
+      - ${PWD}/node/config/node2_mean15.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/config/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.genesis/accounts_test.json
-      - ${PWD}/node/keys/node1:/home/aeternity/node/local/rel/aeternity/keys
+      - ${PWD}/node/keys/node2:/home/aeternity/node/local/rel/aeternity/keys
       - ae_mdw_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
+      ENABLE_CONSOLE_LOG: "true"
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+      AE__MINING__AUTOSTART: "false"
       AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:4000/status"]
@@ -37,6 +60,9 @@ services:
         interval: 3s
         timeout: 10s
         retries: 5
+    depends_on:
+      node:
+        condition: service_healthy
 
   faucet:
     image: aeternity/aepp-faucet-nodejs
@@ -131,5 +157,6 @@ services:
         condition: service_healthy
 
 volumes:
+  ae_node_db:
   ae_mdw_node_db:
   ae_mdw_db:

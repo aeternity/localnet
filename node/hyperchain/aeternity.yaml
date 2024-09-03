@@ -21,10 +21,7 @@ chain:
           polling:
             fetch_interval: 250
             nodes:
-              - host: 'mdw'
-                port: 3013
-                user: 'not used'
-                password: 'not used'
+              - "http://mdw:3013"
         stakers:
           - hyper_chain_account:
               priv: 'f191dcb1fc96fadf6c08677e7a479288977db3feab9375dd39ff85db187d851ab8440e688d6737ae51741b668c97def0bf8eff7159f77b9fd1b5b4f2c614fce4'

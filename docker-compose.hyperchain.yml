@@ -1,14 +1,13 @@
-version: '3.2'
 services:
   hc_mdw:
-    platform: linux/x86_64
-    image: aeternity/ae_mdw:1.66.4
-    # image: aeternity/ae_mdw:local-hc
-    # build:
-    #   context: https://github.com/aeternity/ae_mdw.git
-    #   args:
-    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-    #     NODE_VERSION: 6.12.0
+    # platform: linux/x86_64
+    # image: aeternity/ae_mdw:1.86.0
+    image: aeternity/ae_mdw:local
+    build:
+      context: https://github.com/aeternity/ae_mdw.git#v1.86.0
+      args:
+        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+        NODE_VERSION: 7.2.0
     hostname: hc_mdw
     networks:
       default:
@@ -29,6 +28,7 @@ services:
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
+      ENABLE_CONSOLE_LOG: "true"
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
       PORT: 24000
       WS_PORT: 24001
