@@ -1,6 +1,6 @@
 # Aeternity Localnet
 
-Docker-compose based configuration to easily run locally deployed dev/test network.
+Docker compose based configuration to easily run locally deployed dev/test network.
 Latest config files support node `v6.*` For older node versions use the `v1.*` tags of this repository.
 
 This repository provide two setups described below:
@@ -42,10 +42,10 @@ Also node1 have the standard port bindings as well:
 
 ### Single Node Configuraiton (default)
 
-To use a Single Node Configuration start the containers with the docker-compose command. Example:
+To use a Single Node Configuration start the containers with the docker compose command. Example:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 Check if the node is running:
@@ -57,23 +57,23 @@ curl http://localhost:8080/v2/status
 To destroy the network:
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 To cleanup the associated docker volumes, `-v` option could be used:
 
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 More details can be found in [`docker-compose` documentation](https://docs.docker.com/compose/reference/).
 
 ### 3 Node configuration
 
-To start the 3 node configuration use the additional docker-compose config:
+To start the 3 node configuration use the additional docker compose config:
 
 ```bash
-docker-compose -f docker-compose.multi.yml up -d
+docker compose -f docker-compose.multi.yml up -d
 ```
 
 Node names:
@@ -93,7 +93,7 @@ This configuration includes a node+middleware, explorer, base wallet, faucet and
 To boot it run:
 
 ```bash
-docker-compose -f docker-compose.full.yml up -d
+docker compose -f docker-compose.full.yml up -d
 ```
 
 List of all services and their URLs can be found at: http://localhost:8000
@@ -104,7 +104,7 @@ This configuration runs the full infrastructure (see above) as *parent chain* an
 To boot it run:
 
 ```bash
-docker-compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
+docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
 ```
 
 List of all *parent chain* services and their URLs can be found at: http://localhost:8000
@@ -117,7 +117,7 @@ List of all *child chain* services and their URLs can be found at: http://localh
 To change what node version is used set `IMAGE_TAG` environment variable, e.g.:
 
 ```bash
-IMAGE_TAG=v4.0.0 docker-compose up -d
+IMAGE_TAG=v4.0.0 docker compose up -d
 ```
 
 This configuration is known to work with node versions >= 5.0.0
@@ -133,7 +133,7 @@ It can be changed by setting `AETERNITY_MINE_RATE` environment variable.
 The variable is in milliseconds, so to set 1 block per 10 seconds use:
 
 ```bash
-AETERNITY_MINE_RATE=10000 docker-compose -f docker-compose.multi.yml up
+AETERNITY_MINE_RATE=10000 docker compose -f docker-compose.multi.yml up
 ```
 
 ### Accounts
