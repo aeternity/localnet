@@ -1,59 +1,54 @@
 chain:
   consensus:
     '0':
-      type: 'hyper_chain'
       config:
+        child_block_time: 3000
+        child_epoch_length: 600
         contract_owner: 'ak_11111111111111111111111111111115rHyByZ'
         election_contract: 'ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA'
-        rewards_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
-        expected_key_block_rate: 30000
-        lazy_leader_trigger_time: 5000
         parent_chain:
-          confirmations: 0
-          start_height: 10
-          producing_commitments: true
           consensus:
-            fee: 100000000000000
-            amount: 1
             network_id: 'devnet'
-            spend_address: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
             type: 'AE2AE'
+          parent_epoch_length: 10
           polling:
-            fetch_interval: 250
+            fetch_interval: 500
             nodes:
-              - "http://mdw:3013"
+              - 'http://mdw:3013'
+          start_height: 10
+        rewards_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
         stakers:
           - hyper_chain_account:
-              priv: 'f191dcb1fc96fadf6c08677e7a479288977db3feab9375dd39ff85db187d851ab8440e688d6737ae51741b668c97def0bf8eff7159f77b9fd1b5b4f2c614fce4'
-              pub: 'ak_2Q9pmuxKdMmgdjcbQr3BonaucbYGjdeDkqMS2mewMKYgybJ2WJ'
-            parent_chain_account:
-              priv: '91450EFE0516C24476390086426008147CFDEECFE6935FADA1C056C3A5BA73FBB1B577BCD327CB39E55E6C026BD6A74A1B35DE6C0650C4AE51EFAB759E415B66'
-              pub: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
+              priv: '61784e636987c2e6a508a35f078105f1f380addbc770eb613f704dd8baa24f9704b8fe238454ddae58fc1a5133631b6736d45d988e9c70300907d567a3fa0fd7'
+              pub: 'ak_35dj3xq5XToJX6sjKaE886BLR6kJicqfATgggXKy93brWbYQ7'
           - hyper_chain_account:
-              priv: '38940358aefaeb3c1c5ffc9ec9ed7dd1408c1377ea43cf02b04d72697c96e3ccb72fa51be777030b9163feb913da04e0a444ae0300d4103fa7c5cdd24c76cf23'
-              pub: 'ak_2PgF7npGXkiAfJjhdkwWj4gnTi9UDwiRhP41Gru5Y9VGwe6bJS'
-            parent_chain_account:
-              priv: '91450EFE0516C24476390086426008147CFDEECFE6935FADA1C056C3A5BA73FBB1B577BCD327CB39E55E6C026BD6A74A1B35DE6C0650C4AE51EFAB759E415B66'
-              pub: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
+              priv: '776e98b16b0f0165b78d3fbbd6938a71cef36479c232a4731b65bab38acdaaa3412fc33de634276ce3e226476308c36cfdfb906776233aec318e8d3bdf6256ab'
+              pub: 'ak_Vi71E49G2jQD3fUdmzHQjG3X5oA844oZKx7QHfDDTm8NhqUaM'
           - hyper_chain_account:
-              priv: 'd9f8966dc27065551c85381e72516769fdfd4c0f3496ffa350d6d8ddea9fabc86a8cb05e195a50004e495495bb9960acdae2ab466239e9b3761b0b722d968297'
-              pub: 'ak_ovfcHoShxHfyKhvpwr4PWVhGmYdyhfM3DwAFztwgL886rhVS7'
-            parent_chain_account:
-              priv: '91450EFE0516C24476390086426008147CFDEECFE6935FADA1C056C3A5BA73FBB1B577BCD327CB39E55E6C026BD6A74A1B35DE6C0650C4AE51EFAB759E415B66'
-              pub: 'ak_2MGLPW2CHTDXJhqFJezqSwYSNwbZokSKkG7wSbGtVmeyjGfHtm'
+              priv: 'ee8717e491a973e06730cfcd6d700d41f0c68ca36fd22ad0be7102513b3fca6c2057ee2969052490e3638e8ffb22bdaf5060189125481268611f046f951d4715'
+              pub: 'ak_FFAuLh2W236SfVPg6YasUW9VwzmsshstdHQ1Nx5wGtWaZQQy2'
+      type: 'hyperchain'
   db_direct_access: true
   hard_forks:
-    '5': 0
+    '6': 0
   persist: true
+
 fork_management:
   network_id: 'hc_devnet'
+
 http:
   endpoints:
     dry-run: true
+
+peers: []
 include_default_peers: false
+
 mining:
   autostart: true
   beneficiary: 'ak_2b8YNe9XoFDJtwaCAc6A4LLLj2sSUNqoJth66xRa87EQPGwxe7'
-peers: []
+
 logging:
   level: warning
+
+metrics:
+  port: 0

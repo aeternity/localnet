@@ -1,13 +1,14 @@
 services:
   hc_mdw:
-    image: aeternity/ae_mdw
+    # image: aeternity/ae_mdw
     # platform: linux/x86_64
-    # image: aeternity/ae_mdw:local
-    # build:
-    #   context: https://github.com/aeternity/ae_mdw.git#v1.90.0
-    #   args:
-    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-    #     NODE_VERSION: 7.2.0
+    image: aeternity/ae_mdw:local
+    build:
+      context: https://github.com/aeternity/ae_mdw.git#master
+      args:
+        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+        # NODE_VERSION: master
+        NODE_IMAGE: aeternity/aeternity:master
     hostname: hc_mdw
     networks:
       default:
@@ -21,14 +22,15 @@ services:
       - "23014:23014" #Node's channels default websocket port
     volumes:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
-      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
-      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_accounts.json
+      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_contracts.json
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
       # workaround
       TELEMETRY_STATSD_HOST: localhost
       ENABLE_CONSOLE_LOG: "true"
+      # LOG_LEVEL: debug
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
       PORT: 24000
       WS_PORT: 24001
@@ -53,7 +55,7 @@ services:
       NODE_URL: http://hc_mdw:23013/
       EPOCH_URL_DEBUG: http://hc_mdw:23113/
       EXPLORER_URL: http://localhost:28020
-      FAUCET_ACCOUNT_PRIV_KEY: 1327C9AD3650EF196DDF156E8F53FA01294C68D57A1DF5363AAB03EC314C8A270CF6CB1DCC6B8FC14DEF3F66B834D881CFBB5C120934903DCD859FC05675429E
+      FAUCET_ACCOUNT_PRIV_KEY: EBEAB332C627DC6F79E1D305ABFD448781C0101F3E1A5261B37EC4821702E4032757508127D7A9BA0AC449547085FAF3A18C96903800C0245F0A79949D930792
     ports:
      - "28030:5000"
     depends_on:
@@ -106,7 +108,7 @@ services:
 
   ui:
     platform: linux/x86_64
-    image: aeternity/aepp-hyperchain:master
+    image: public.ecr.aws/aeternity/aepp-hyperchain:master
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
