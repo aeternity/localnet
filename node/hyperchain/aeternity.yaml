@@ -27,6 +27,7 @@ chain:
           - hyper_chain_account:
               priv: 'ee8717e491a973e06730cfcd6d700d41f0c68ca36fd22ad0be7102513b3fca6c2057ee2969052490e3638e8ffb22bdaf5060189125481268611f046f951d4715'
               pub: 'ak_FFAuLh2W236SfVPg6YasUW9VwzmsshstdHQ1Nx5wGtWaZQQy2'
+        staking_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
       type: 'hyperchain'
   db_direct_access: true
   hard_forks:
@@ -38,6 +39,7 @@ fork_management:
 
 http:
   endpoints:
+    hyperchain: true
     dry-run: true
 
 peers: []
