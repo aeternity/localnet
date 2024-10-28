@@ -48,9 +48,11 @@ services:
       - ae_mdw_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
-      # workaround
-      TELEMETRY_STATSD_HOST: localhost
+      # mdw configuration
+      ENABLE_TELEMETRY: "false"
       ENABLE_CONSOLE_LOG: "true"
+      LOG_LEVEL: warning
+      # node configuration
       AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
       AE__MINING__AUTOSTART: "false"
       AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
