@@ -15,11 +15,12 @@ services:
         aliases:
           - "hc-mdw.local.gd"
     ports:
-      - "24000:24000" #MDW's default port
-      - "24001:24001" #MDW's websocket default port
-      - "23113:23113" #Node's default internal API port
-      - "23013:23013" #Node's default external API port
-      - "23014:23014" #Node's channels default websocket port
+      - "24000:24000" #MDW's port
+      - "24001:24001" #MDW's websocket port
+      - "23113:23113" #Node's internal API port
+      - "23013:23013" #Node's external API port
+      - "23014:23014" #Node's channels websocket port
+      - "23015:23015" #Node's sync port
     volumes:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_accounts.json
@@ -38,6 +39,7 @@ services:
       AE__HTTP__EXTERNAL__PORT: 23013
       AE__HTTP__INTERNAL__PORT: 23113
       AE__WEBSOCKET__CHANNEL__PORT: 23014
+      AE__SYNC__PORT: 23015
       AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:24000/status"]
