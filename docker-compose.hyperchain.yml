@@ -25,6 +25,7 @@ services:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
       - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_accounts.json
       - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/keys:/home/aeternity/node/local/rel/aeternity/data/aecore/keys
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
