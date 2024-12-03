@@ -111,7 +111,7 @@ services:
 
   ui:
     platform: linux/x86_64
-    image: public.ecr.aws/aeternity/aepp-hyperchain:v0.3
+    image: public.ecr.aws/aeternity/aepp-hyperchain:v0.8
     environment:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
