@@ -110,6 +110,14 @@ docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
 List of all *parent chain* services and their URLs can be found at: http://localhost:8000
 List of all *child chain* services and their URLs can be found at: http://localhost:8080
 
+To rebuild the mdw and node containers with the latest `master` versions, run:
+
+```bash
+docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml down -v --remove-orphans
+docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml build hc_mdw
+docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
+```
+
 ### Image Version
 
 3 node configuration uses the `aeternity/aeternity:latest` image by default, it will be pulled from [docker hub](https://hub.docker.com/r/aeternity/aeternity/) if it's not found locally.
