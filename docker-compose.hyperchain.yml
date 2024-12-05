@@ -4,7 +4,7 @@ services:
     # platform: linux/x86_64
     image: aeternity/ae_mdw:local
     build:
-      context: https://github.com/aeternity/ae_mdw.git#after-rebase-hyperchain-support
+      context: https://github.com/aeternity/ae_mdw.git#fix-hyperchain-sync
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         # NODE_VERSION: master
