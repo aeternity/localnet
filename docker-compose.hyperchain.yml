@@ -65,19 +65,18 @@ services:
       hc_mdw:
         condition: service_healthy
 
-  hc_explorer:
-    image: aeternity/mdw-frontend
+  hc_aescan:
+    image: aeternity/aescan:develop
+    platform: linux/x86_64
     ports:
-     - "28020:3000"
+      - "28020:80"
     environment:
-      NUXT_APP_NODE_URL: http://hc-mdw.local.gd:23013/v3
-      NUXT_APP_MDW_URL: http://hc-mdw.local.gd:24000
-      NUXT_APP_NODE_WS: ws://localhost:24001/websocket
-
-      NUXT_APP_OTHER_DEPLOYMENTS: ""
-      NUXT_APP_NETWORK_NAME: HYPERCHAIN LOCAL
-      NUXT_APP_ENABLE_FAUCET: ""
-      NUXT_APP_FAUCET_API: http://localhost:28030/account
+      NUXT_PUBLIC_NODE_URL: http://hc-mdw.local.gd:23013
+      NUXT_PUBLIC_MIDDLEWARE_URL: http://hc-mdw.local.gd:24000
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v2/websocket
+      NUXT_PUBLIC_NETWORK_NAME: HYPERCHAIN
+      NUXT_PUBLIC_NETWORK_ID: "hc_devnet"
+      NUXT_PUBLIC_DEBUG_MODE: false
     depends_on:
       hc_mdw:
         condition: service_healthy
@@ -137,13 +136,13 @@ services:
         timeout: 1s
         retries: 5
     depends_on:
-      mdw:
+      hc_mdw:
         condition: service_healthy
-      base:
+      hc_base:
         condition: service_started
-      faucet:
+      hc_faucet:
         condition: service_started
-      explorer:
+      hc_aescan:
         condition: service_started
 
   hc_instructions:
