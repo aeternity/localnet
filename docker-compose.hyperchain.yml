@@ -54,12 +54,13 @@ services:
 
   hc_faucet:
     platform: linux/x86_64
-    image: aeternity/aepp-faucet-nodejs
+    image: aeternity/aepp-faucet-nodejs:v1.2.1
     environment:
       NODE_URL: http://hc_mdw:23013/
       EPOCH_URL_DEBUG: http://hc_mdw:23113/
       EXPLORER_URL: http://localhost:28020
       FAUCET_ACCOUNT_PRIV_KEY: a08dd1215aad91e1d6ab08932f93e7a126318a7c55c27ba40a25e8ab19f443621d06b9cbb2e6372f3d5b97ddff26d77a785e262cbe00182be9528dc270a5c1d6
+      SPEND_TX_TTL: 10
     ports:
      - "28030:5000"
     depends_on:

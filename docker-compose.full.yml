@@ -67,13 +67,14 @@ services:
         condition: service_healthy
 
   faucet:
-    image: aeternity/aepp-faucet-nodejs
+    image: aeternity/aepp-faucet-nodejs:v1.2.1
     platform: linux/x86_64
     environment:
       NODE_URL: http://mdw:3013/
       EPOCH_URL_DEBUG: http://mdw:3113/
       EXPLORER_URL: http://localhost:8020
       FAUCET_ACCOUNT_PRIV_KEY: EE796C442F410F8B1AACFA877A3FE734BC79CE90C8272570AC1DD8CDAC38F104D9CA6CADC0630D0A817C4756E87994B1F3FEA058AECC16720F2A33474B138710
+      SPEND_TX_TTL: 10
     ports:
      - "8030:5000"
     depends_on:
