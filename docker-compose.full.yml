@@ -2,7 +2,7 @@ services:
   # Mining is supported only on linux/x86_64 and mdw doesn't run in emulation, thus an extra node to mine
   node:
     platform: linux/x86_64
-    image: aeternity/aeternity
+    image: aeternity/aeternity:v7.2.0
     hostname: node1
     ports:
       - "13013:3013" #Node's default external API port
@@ -22,7 +22,7 @@ services:
         retries: 5
 
   mdw:
-    image: aeternity/ae_mdw:1.91.1
+    image: aeternity/ae_mdw:1.95.0
     # platform: linux/x86_64
     # image: aeternity/ae_mdw:local
     # build:
@@ -80,19 +80,18 @@ services:
       mdw:
         condition: service_healthy
 
-  explorer:
-    image: aeternity/mdw-frontend
+  aescan:
+    image: aeternity/aescan:develop
+    platform: linux/x86_64
     ports:
-      - "8020:3000"
+      - "8020:80"
     environment:
-      NUXT_APP_NODE_URL: http://mdw.local.gd:3013/v3
-      NUXT_APP_MDW_URL: http://mdw.local.gd:4000
-      NUXT_APP_NODE_WS: ws://localhost:4001/websocket
-
-      NUXT_APP_OTHER_DEPLOYMENTS: ""
-      NUXT_APP_NETWORK_NAME: DEVNET LOCAL
-      NUXT_APP_ENABLE_FAUCET: "false"
-      NUXT_APP_FAUCET_API: http://localhost:8030/account
+      NUXT_PUBLIC_NODE_URL: http://mdw.local.gd:3013
+      NUXT_PUBLIC_MIDDLEWARE_URL: http://mdw.local.gd:4000
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://mdw.local.gd:4001/v2/websocket
+      NUXT_PUBLIC_NETWORK_NAME: LOCALNET
+      NUXT_PUBLIC_NETWORK_ID: "devnet"
+      NUXT_PUBLIC_DEBUG_MODE: false
     depends_on:
       mdw:
         condition: service_healthy
@@ -148,7 +147,7 @@ services:
         condition: service_started
       faucet:
         condition: service_started
-      explorer:
+      aescan:
         condition: service_started
 
   instructions:
