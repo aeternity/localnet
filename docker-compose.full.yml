@@ -22,7 +22,7 @@ services:
         retries: 5
 
   mdw:
-    image: aeternity/ae_mdw:1.95.0
+    image: aeternity/ae_mdw:master
     # platform: linux/x86_64
     # image: aeternity/ae_mdw:local
     # build:
@@ -81,16 +81,17 @@ services:
         condition: service_healthy
 
   aescan:
-    image: aeternity/aescan:develop
+    image: aeternity/aescan:pr-1003
     platform: linux/x86_64
     ports:
       - "8020:80"
     environment:
       NUXT_PUBLIC_NODE_URL: http://mdw.local.gd:3013
       NUXT_PUBLIC_MIDDLEWARE_URL: http://mdw.local.gd:4000
-      NUXT_PUBLIC_WEBSOCKET_URL: ws://mdw.local.gd:4001/v2/websocket
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://mdw.local.gd:4001/v3/websocket
+      NUXT_PUBLIC_NETWORK_ID: devnet
       NUXT_PUBLIC_NETWORK_NAME: LOCALNET
-      NUXT_PUBLIC_NETWORK_ID: "devnet"
+      NUXT_PUBLIC_APP_DOMAIN: http://localhost:8020
       NUXT_PUBLIC_DEBUG_MODE: false
     depends_on:
       mdw:
