@@ -4,7 +4,7 @@ services:
     # platform: linux/x86_64
     image: aeternity/ae_mdw:local
     build:
-      context: https://github.com/aeternity/ae_mdw.git#master
+      context: https://github.com/aeternity/ae_mdw.git#after-rebase-hyperchain-support
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         # NODE_VERSION: master
@@ -66,16 +66,17 @@ services:
         condition: service_healthy
 
   hc_aescan:
-    image: aeternity/aescan:develop
+    image: aeternity/aescan:pr-1003
     platform: linux/x86_64
     ports:
       - "28020:80"
     environment:
       NUXT_PUBLIC_NODE_URL: http://hc-mdw.local.gd:23013
       NUXT_PUBLIC_MIDDLEWARE_URL: http://hc-mdw.local.gd:24000
-      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v2/websocket
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v3/websocket
+      NUXT_PUBLIC_NETWORK_ID: hc_devnet
       NUXT_PUBLIC_NETWORK_NAME: HYPERCHAIN
-      NUXT_PUBLIC_NETWORK_ID: "hc_devnet"
+      NUXT_PUBLIC_APP_DOMAIN: http://localhost:28020
       NUXT_PUBLIC_DEBUG_MODE: false
     depends_on:
       hc_mdw:
