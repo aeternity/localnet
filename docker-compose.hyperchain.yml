@@ -8,7 +8,7 @@ services:
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         # NODE_VERSION: master
-        NODE_IMAGE: aeternity/aeternity:master
+        NODE_IMAGE: aeternity/aeternity:v7.3.0-rc1
     hostname: hc_mdw
     networks:
       default:
@@ -118,8 +118,8 @@ services:
       AE_FAUCET_URL: "http://localhost:28030/"
       AE_WALLET_URL: "http://localhost:28010/"
       AE_NODE_URL: "http://hc-mdw.local.gd:23013/"
-      STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
-      HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
+      STAKING_CONTRACT: "ct_KJgjAXMtRF68AbT5A2aC9fTk8PA4WFv26cFSY27fXs6FtYQHK"
+      HC_ELECTION_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
     ports:
      - "28040:3000"
     depends_on:

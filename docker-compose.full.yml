@@ -2,7 +2,7 @@ services:
   # Mining is supported only on linux/x86_64 and mdw doesn't run in emulation, thus an extra node to mine
   node:
     platform: linux/x86_64
-    image: aeternity/aeternity:v7.2.0
+    image: aeternity/aeternity:v7.3.0-rc1
     hostname: node1
     ports:
       - "13013:3013" #Node's default external API port

@@ -6,7 +6,7 @@ chain:
         child_epoch_length: 600
         contract_owner: 'ak_11111111111111111111111111111115rHyByZ'
         default_pinning_behavior: true
-        election_contract: 'ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA'
+        election_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
         fixed_coinbase: 100
         parent_chain:
           consensus:
@@ -32,7 +32,7 @@ chain:
               priv: 'c1c1bc302828ca238933b5323e3caebe291294244bdd117ff442542f6618519f27973ccf20fd0e3aa2814154782bba4fdf568f548417c3c3b81d5fb077d20b94'
               pub: 'ak_JSJ159FpcGb7UWD8mu3Sef3tP62MB7966wXPsXVRXNfXNiFCR'
         pinning_reward_value: 1000
-        rewards_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
+        rewards_contract: 'ct_KJgjAXMtRF68AbT5A2aC9fTk8PA4WFv26cFSY27fXs6FtYQHK'
         stakers:
           - hyper_chain_account:
               priv: '492541e275cd28b011cba088f754adc067164115755ace8549e2ca1c82854466486ee0357316e9caca590456faf5fcf8eed50fa64ae7ac05348ef84d34c6eac1'
@@ -43,7 +43,7 @@ chain:
           - hyper_chain_account:
               priv: '25a3056fb11451d0d3b9b98bab97cb2714b61937e9797ea0f8157cd62e6116c03ec2eb1a4c86475e65c43eb05bb9570e1dda71aa4ea3993d0309cffc5f9006c5'
               pub: 'ak_UeA2rsmQkUzhS81DrhvmSNrFSViNrUoE75vGRm3SvZ1bKRm38'
-        staking_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'
+        staking_contract: 'ct_KJgjAXMtRF68AbT5A2aC9fTk8PA4WFv26cFSY27fXs6FtYQHK'
       type: 'hyperchain'
   db_direct_access: true
   hard_forks:
