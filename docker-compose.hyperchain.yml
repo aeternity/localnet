@@ -110,21 +110,6 @@ services:
       hc_mdw:
         condition: service_healthy
 
-  ui:
-    platform: linux/x86_64
-    image: public.ecr.aws/aeternity/aepp-hyperchain:v0.8
-    environment:
-      AE_FAUCET_URL: "http://localhost:28030/"
-      AE_WALLET_URL: "http://localhost:28010/"
-      AE_NODE_URL: "http://hc-mdw.local.gd:23013/"
-      STAKING_CONTRACT: "ct_KJgjAXMtRF68AbT5A2aC9fTk8PA4WFv26cFSY27fXs6FtYQHK"
-      HC_ELECTION_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
-    ports:
-     - "28040:3000"
-    depends_on:
-      hc_mdw:
-        condition: service_healthy
-
   hc_static:
     image: nginx:1.13.8
     ports:
