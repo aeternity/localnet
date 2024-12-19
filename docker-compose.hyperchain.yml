@@ -4,7 +4,7 @@ services:
     # platform: linux/x86_64
     image: aeternity/ae_mdw:local
     build:
-      context: https://github.com/aeternity/ae_mdw.git#fix-hyperchain-sync
+      context: https://github.com/aeternity/ae_mdw.git#v1.96.0
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         # NODE_VERSION: master
@@ -79,6 +79,7 @@ services:
       NUXT_PUBLIC_NETWORK_NAME: LOCAL HYPERCHAIN
       NUXT_PUBLIC_APP_DOMAIN: http://localhost:28020
       NUXT_PUBLIC_DEBUG_MODE: false
+      NUXT_PUBLIC_IS_HYPERCHAIN: true
     depends_on:
       hc_mdw:
         condition: service_healthy
