@@ -98,17 +98,17 @@ docker compose -f docker-compose.full.yml up -d
 
 List of all services and their URLs can be found at: http://localhost:8000
 
-### Hyperchains configuration
+### Hyperchains Configuration
 
-This configuration runs the full infrastructure (see above) as *parent chain* and a copy of it as *child chain* + Hyperchains UI.
-To boot it run:
+This configuration creates a complete local Hyperchains testing environment by running:
+- A full infrastructure setup as the *parent chain*
+- A parallel infrastructure as the *child chain* 
+- The Hyperchains UI for managing and monitoring both chains
+
+To launch the environment:
 
 ```bash
 docker compose -f docker-compose.full.yml -f docker-compose.hyperchain.yml up -d
-```
-
-List of all *parent chain* services and their URLs can be found at: http://localhost:8000
-List of all *child chain* services and their URLs can be found at: http://localhost:8080
 
 ### Image Version
 
