@@ -67,7 +67,7 @@ services:
         condition: service_healthy
 
   hc_aescan:
-    image: aeternity/aescan:pr-1035
+    image: aeternity/aescan:0.19.0
     platform: linux/x86_64
     ports:
       - "28020:80"
