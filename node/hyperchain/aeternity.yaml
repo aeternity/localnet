@@ -45,10 +45,11 @@ chain:
               pub: 'ak_UeA2rsmQkUzhS81DrhvmSNrFSViNrUoE75vGRm3SvZ1bKRm38'
         staking_contract: 'ct_KJgjAXMtRF68AbT5A2aC9fTk8PA4WFv26cFSY27fXs6FtYQHK'
       type: 'hyperchain'
-  db_direct_access: true
   hard_forks:
-    '6': 0
-  persist: true
+    '6':
+      accounts_file: 'hc_devnet_accounts.json'
+      contracts_file: 'hc_devnet_contracts.json'
+      height: 0
   currency:
     name: Hyper Aeternity
     symbol: HAE
@@ -63,12 +64,8 @@ http:
     hyperchain: true
     dry-run: true
 
-peers: []
-include_default_peers: false
-
 mining:
   autostart: true
-  beneficiary: 'ak_2b8YNe9XoFDJtwaCAc6A4LLLj2sSUNqoJth66xRa87EQPGwxe7'
 
 logging:
   level: warning

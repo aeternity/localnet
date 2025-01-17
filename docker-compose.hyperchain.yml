@@ -4,11 +4,11 @@ services:
     # platform: linux/x86_64
     image: aeternity/ae_mdw:local
     build:
-      context: https://github.com/aeternity/ae_mdw.git#v1.96.0
+      context: https://github.com/aeternity/ae_mdw.git#v1.97.0
       args:
         BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
         # NODE_VERSION: master
-        NODE_IMAGE: aeternity/aeternity:v7.3.0-rc1
+        NODE_IMAGE: aeternity/aeternity:v7.3.0-rc3
     hostname: hc_mdw
     networks:
       default:
@@ -23,8 +23,8 @@ services:
       - "23015:23015" #Node's sync port
     volumes:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
-      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_accounts.json
-      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.ceres/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_accounts.json
+      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_contracts.json
       - ${PWD}/node/hyperchain/keys:/home/aeternity/node/local/rel/aeternity/data/aecore/keys
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
@@ -67,7 +67,7 @@ services:
         condition: service_healthy
 
   hc_aescan:
-    image: aeternity/aescan:pr-1003
+    image: aeternity/aescan:pr-1035
     platform: linux/x86_64
     ports:
       - "28020:80"
