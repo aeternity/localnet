@@ -1,40 +1,46 @@
 services:
   hc_mdw:
-    image: aeternity/ae_mdw
+    # image: aeternity/ae_mdw
     # platform: linux/x86_64
-    # image: aeternity/ae_mdw:local
-    # build:
-    #   context: https://github.com/aeternity/ae_mdw.git#v1.90.0
-    #   args:
-    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-    #     NODE_VERSION: 7.2.0
+    image: aeternity/ae_mdw:local
+    build:
+      context: https://github.com/aeternity/ae_mdw.git#v1.97.0
+      args:
+        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+        # NODE_VERSION: master
+        NODE_IMAGE: aeternity/aeternity:v7.3.0-rc3
     hostname: hc_mdw
     networks:
       default:
         aliases:
           - "hc-mdw.local.gd"
     ports:
-      - "24000:24000" #MDW's default port
-      - "24001:24001" #MDW's websocket default port
-      - "23113:23113" #Node's default internal API port
-      - "23013:23013" #Node's default external API port
-      - "23014:23014" #Node's channels default websocket port
+      - "24000:24000" #MDW's port
+      - "24001:24001" #MDW's websocket port
+      - "23113:23113" #Node's internal API port
+      - "23013:23013" #Node's external API port
+      - "23014:23014" #Node's channels websocket port
+      - "23015:23015" #Node's sync port
     volumes:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
-      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_accounts.json
-      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/.iris/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_accounts.json
+      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/keys:/home/aeternity/node/local/rel/aeternity/data/aecore/keys
       - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
       - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
     environment:
-      # workaround
-      TELEMETRY_STATSD_HOST: localhost
+      # mdw configuration
+      ENABLE_TELEMETRY: "false"
       ENABLE_CONSOLE_LOG: "true"
-      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
+      LOG_LEVEL: warning
       PORT: 24000
       WS_PORT: 24001
+      # node configuration
+      AETERNITY_CONFIG: /home/aeternity/aeternity.yaml
       AE__HTTP__EXTERNAL__PORT: 23013
       AE__HTTP__INTERNAL__PORT: 23113
       AE__WEBSOCKET__CHANNEL__PORT: 23014
+      AE__SYNC__PORT: 23015
       AE__HTTP__CORS__ALLOW_DOMAINS: '["*"]'
     healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:24000/status"]
@@ -48,30 +54,32 @@ services:
 
   hc_faucet:
     platform: linux/x86_64
-    image: aeternity/aepp-faucet-nodejs
+    image: aeternity/aepp-faucet-nodejs:v1.2.1
     environment:
       NODE_URL: http://hc_mdw:23013/
       EXPLORER_URL: http://localhost:28020
-      FAUCET_ACCOUNT_PRIV_KEY: 1327C9AD3650EF196DDF156E8F53FA01294C68D57A1DF5363AAB03EC314C8A270CF6CB1DCC6B8FC14DEF3F66B834D881CFBB5C120934903DCD859FC05675429E
+      FAUCET_ACCOUNT_PRIV_KEY: a08dd1215aad91e1d6ab08932f93e7a126318a7c55c27ba40a25e8ab19f443621d06b9cbb2e6372f3d5b97ddff26d77a785e262cbe00182be9528dc270a5c1d6
+      SPEND_TX_TTL: 10
     ports:
      - "28030:5000"
     depends_on:
       hc_mdw:
         condition: service_healthy
 
-  hc_explorer:
-    image: aeternity/mdw-frontend
+  hc_aescan:
+    image: aeternity/aescan:0.19.0
+    platform: linux/x86_64
     ports:
-     - "28020:3000"
+      - "28020:80"
     environment:
-      NUXT_APP_NODE_URL: http://hc-mdw.local.gd:23013/v3
-      NUXT_APP_MDW_URL: http://hc-mdw.local.gd:24000
-      NUXT_APP_NODE_WS: ws://localhost:24001/websocket
-
-      NUXT_APP_OTHER_DEPLOYMENTS: ""
-      NUXT_APP_NETWORK_NAME: HYPERCHAIN LOCAL
-      NUXT_APP_ENABLE_FAUCET: ""
-      NUXT_APP_FAUCET_API: http://localhost:28030/account
+      NUXT_PUBLIC_NODE_URL: http://hc-mdw.local.gd:23013
+      NUXT_PUBLIC_MIDDLEWARE_URL: http://hc-mdw.local.gd:24000
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v3/websocket
+      NUXT_PUBLIC_NETWORK_ID: hc_devnet
+      NUXT_PUBLIC_NETWORK_NAME: LOCAL HYPERCHAIN
+      NUXT_PUBLIC_APP_DOMAIN: http://localhost:28020
+      NUXT_PUBLIC_DEBUG_MODE: false
+      NUXT_PUBLIC_IS_HYPERCHAIN: true
     depends_on:
       hc_mdw:
         condition: service_healthy
@@ -89,7 +97,7 @@ services:
     image: aeternitybot/aepp-base:develop
     platform: linux/x86_64
     environment:
-      VUE_APP_NETWORK_NAME: Hyperchain Local
+      VUE_APP_NETWORK_NAME: Local Hyperchain
       VUE_APP_NODE_URL: http://localhost:23013
       VUE_APP_MIDDLEWARE_URL: http://localhost:24000
       VUE_APP_EXPLORER_URL: http://localhost:28020
@@ -100,21 +108,6 @@ services:
     depends_on:
       hc_base_backend:
         condition: service_started
-      hc_mdw:
-        condition: service_healthy
-
-  ui:
-    platform: linux/x86_64
-    image: aeternity/aepp-hyperchain:master
-    environment:
-      AE_FAUCET_URL: "http://localhost:28030/"
-      AE_WALLET_URL: "http://localhost:28010/"
-      AE_NODE_URL: "http://hc-mdw.local.gd:23013/"
-      STAKING_CONTRACT: "ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ"
-      HC_ELECTION_CONTRACT: "ct_t7ESuRFvGdYHwM6KJhKbSnFUJQhnB9aCFed1RWR89ShNDgwWA"
-    ports:
-     - "28040:3000"
-    depends_on:
       hc_mdw:
         condition: service_healthy
 
@@ -131,13 +124,13 @@ services:
         timeout: 1s
         retries: 5
     depends_on:
-      mdw:
+      hc_mdw:
         condition: service_healthy
-      base:
+      hc_base:
         condition: service_started
-      faucet:
+      hc_faucet:
         condition: service_started
-      explorer:
+      hc_aescan:
         condition: service_started
 
   hc_instructions:
