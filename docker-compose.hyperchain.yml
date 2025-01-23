@@ -74,7 +74,7 @@ services:
     environment:
       NUXT_PUBLIC_NODE_URL: http://hc-mdw.local.gd:23013
       NUXT_PUBLIC_MIDDLEWARE_URL: http://hc-mdw.local.gd:24000
-      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v3/websocket
+      NUXT_PUBLIC_WEBSOCKET_URL: ws://hc-mdw.local.gd:24001/v2/websocket
       NUXT_PUBLIC_NETWORK_ID: hc_devnet
       NUXT_PUBLIC_NETWORK_NAME: LOCAL HYPERCHAIN
       NUXT_PUBLIC_APP_DOMAIN: http://localhost:28020
