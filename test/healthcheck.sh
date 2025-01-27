@@ -8,10 +8,10 @@ WEBSOCKET_ADDR=${WEBSOCKET_ADDR:-localhost:3014}
 MIN_PEERS=${MIN_PEERS:-2}
 
 echo "Testing external API: ${EXTERNAL_ADDR}"
-curl -sSf -o /dev/null --retry 6 http://${EXTERNAL_ADDR}/v2/status || exit 2
+curl -sSf -o /dev/null --retry 6 http://${EXTERNAL_ADDR}/v3/status || exit 2
 
 echo "Testing internal API: ${INTERNAL_ADDR}"
-PEERS_COUNT=$(curl -sS ${INTERNAL_ADDR}/v2/debug/peers | grep -o aenode | wc -l)
+PEERS_COUNT=$(curl -sS ${INTERNAL_ADDR}/v3/debug/peers | grep -o aenode | wc -l)
 
 echo "Testing internal API: $PEERS_COUNT peers"
 test $PEERS_COUNT -ge $MIN_PEERS || exit 3
