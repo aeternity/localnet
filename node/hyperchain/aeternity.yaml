@@ -4,6 +4,7 @@ chain:
       config:
         child_block_time: 3000
         child_epoch_length: 600
+        child_block_production_time: 500
         contract_owner: 'ak_11111111111111111111111111111115rHyByZ'
         default_pinning_behavior: true
         election_contract: 'ct_LRbi65kmLtE7YMkG6mvG5TxAXTsPJDZjAtsPuaXtRyPA7gnfJ'

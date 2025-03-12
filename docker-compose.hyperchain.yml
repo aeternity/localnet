@@ -1,14 +1,14 @@
 services:
   hc_mdw:
-    # image: aeternity/ae_mdw
+    image: aeternity/ae_mdw:2.0.0
     # platform: linux/x86_64
-    image: aeternity/ae_mdw:local
-    build:
-      context: https://github.com/aeternity/ae_mdw.git#v1.97.0
-      args:
-        BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-        # NODE_VERSION: master
-        NODE_IMAGE: aeternity/aeternity:v7.3.0-rc3
+    # image: aeternity/ae_mdw:local
+    # build:
+    #   context: https://github.com/aeternity/ae_mdw.git#v2.0.0
+    #   args:
+    #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
+    #     # NODE_VERSION: master
+    #     NODE_IMAGE: aeternity/aeternity:v7.3.0-rc5
     hostname: hc_mdw
     networks:
       default:
@@ -23,11 +23,11 @@ services:
       - "23015:23015" #Node's sync port
     volumes:
       - ${PWD}/node/hyperchain/aeternity.yaml:/home/aeternity/aeternity.yaml
-      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_accounts.json
-      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/local/rel/aeternity/data/aecore/hc_devnet_contracts.json
-      - ${PWD}/node/hyperchain/keys:/home/aeternity/node/local/rel/aeternity/data/aecore/keys
-      - ae_hyperchain_node_db:/home/aeternity/node/local/rel/aeternity/data/mnesia
-      - ae_hyperchain_mdw_db:/home/aeternity/node/local/rel/aeternity/data/mdw.db
+      - ${PWD}/node/hyperchain/accounts.json:/home/aeternity/node/data/aecore/hc_devnet_accounts.json
+      - ${PWD}/node/hyperchain/contracts.json:/home/aeternity/node/data/aecore/hc_devnet_contracts.json
+      - ${PWD}/node/hyperchain/keys:/home/aeternity/node/data/aecore/keys
+      - ae_hyperchain_node_db:/home/aeternity/node/data/mnesia
+      - ae_hyperchain_mdw_db:/home/aeternity/node/data/mdw.db
     environment:
       # mdw configuration
       ENABLE_TELEMETRY: "false"
@@ -67,10 +67,10 @@ services:
         condition: service_healthy
 
   hc_aescan:
-    image: aeternity/aescan:0.19.0
+    image: aeternity/aescan:0.20.0
     platform: linux/x86_64
     ports:
-      - "28020:80"
+      - "28020:8080"
     environment:
       NUXT_PUBLIC_NODE_URL: http://hc-mdw.local.gd:23013
       NUXT_PUBLIC_MIDDLEWARE_URL: http://hc-mdw.local.gd:24000
