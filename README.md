@@ -27,11 +27,11 @@ All APIs (external, internal and state channels websocket) are exposed to the do
 - external/internal API - http://$DOCKER_HOST_ADDRESS:8080/nodeX
 - channels API - ws://$DOCKER_HOST_ADDRESS:8080/nodeX/channel
 
-For example if one wants to use `node1` API on local docker host the address is: http://localhost:8080/node1/v2/status
+For example if one wants to use `node1` API on local docker host the address is: http://localhost:8080/node1/v3/status
 
 Also the node1 is always available without URL path suffix, for example:
 
-http://localhost:8080/v2/status
+http://localhost:8080/v3/status
 
 Also node1 have the standard port bindings as well:
 
@@ -51,7 +51,7 @@ docker compose up -d
 Check if the node is running:
 
 ```bash
-curl http://localhost:8080/v2/status
+curl http://localhost:8080/v3/status
 ```
 
 To destroy the network:
@@ -84,7 +84,7 @@ Node names:
 For example to access `node2` API (status), assuming docker host address is `localhost`:
 
 ```bash
-curl http://localhost:8080/node2/v2/status
+curl http://localhost:8080/node2/v3/status
 ```
 
 ### Full infrastructure configuration
