@@ -22,14 +22,14 @@ services:
         retries: 5
 
   mdw:
-    image: aeternity/ae_mdw:2.0.0
+    image: aeternity/ae_mdw:1.102.0
     # platform: linux/x86_64
     # image: aeternity/ae_mdw:local
     # build:
-    #   context: https://github.com/aeternity/ae_mdw.git#v1.97.0
+    #   context: https://github.com/aeternity/ae_mdw.git#v1.102.0
     #   args:
     #     BUILDKIT_CONTEXT_KEEP_GIT_DIR: 1
-    #     NODE_VERSION: 7.2.0
+    #     NODE_VERSION: 7.3.0
     hostname: mdw
     networks:
       default:
